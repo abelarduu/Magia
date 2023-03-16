@@ -21,10 +21,8 @@
 <div>
   <h3>Resultado</h3>
   <div>
-    <img src="img/interface.png" alt="Interface do Magic!" width=300px>
-    <img src="img/Magic!.gif" alt="Magic! gif" width=317px>
-      
-    <img src="img/interface.png" type="image/png" width="315" heigth= "300" />
-    <img src="img/Magic!.gif" type="image/gif" width="300" heigth= "310"/>
+    <img src="img/interface.png" type="image/png" alt="Interface do Magic!" width=317px>
+    <img src="img/Magic!.gif" type="image/gif" alt="Magic! gif" width=313px>
+
   </div>
 </div>
