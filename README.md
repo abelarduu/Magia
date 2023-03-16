@@ -6,7 +6,12 @@
 <div>
   <h4>🚧⚠️Em desenvolvimento...⚠️🚧</h4>
 </div>
-
+  
+<div>
+  <img src="img/interface.png" type="image/png" alt="Interface do Magic!" width=317px>
+  <img src="img/Magic!.gif" type="image/gif" alt="Magic! gif" width=313px>
+</div>
+  
 <div>
     <h3>Sobre o projeto</h3>
     <p>Controle um mago, lute contra goblins e sobreviva o máximo possível.</p>
@@ -16,13 +21,4 @@
     <a href="https://github.com/kitao/pyxel">
       <img src="https://img.shields.io/badge/Pyxel-v1.9.12-blue?style=for-the-badge&logo=python&logoColor=white" alt="Pyxel V.1.9.12" ></a>
   </p>
-</div>
-
-<div>
-  <h3>Resultado</h3>
-  <div>
-    <img src="img/interface.png" type="image/png" alt="Interface do Magic!" width=317px>
-    <img src="img/Magic!.gif" type="image/gif" alt="Magic! gif" width=313px>
-
-  </div>
 </div>
