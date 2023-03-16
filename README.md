@@ -1,7 +1,14 @@
 # Magic!
+<div align=center>
 <header>
-    <img src="images/icon.ico" type="image/ico" width="32" height="32"/>
-    <a href="https://pypi.org/project/pyxel/"><img src="https://img.shields.io/badge/Pyxel-v1.4.3-blue" alt="Pyxel V.1.4.3" style="max-width:100%;"></a>
+    <img src="images/icon.ico" type="image/ico"/>
+    <!--<a href="https://pypi.org/project/pyxel/"><img src="https://img.shields.io/badge/Pyxel-v1.4.3-blue" alt="Pyxel V.1.4.3" style="max-width:100%;"></a>-->
+  <p>
+    <a href="https://www.python.org/">
+      <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python V.3.9" ></a>
+    <a href="https://github.com/kitao/pyxel">
+      <img src="https://img.shields.io/badge/Pyxel-v1.9.12-blue?style=for-the-badge&logo=python&logoColor=white" alt="Pyxel V.1.9.12" ></a>
+  </p>
 </header>
 
 <div align=center>
@@ -64,3 +71,5 @@
         <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" width="32" height="32"/>
     </div>
 <footer>
+
+</div>
