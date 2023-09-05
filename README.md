@@ -1,6 +1,6 @@
 <div align="center">
 <div>
-<img src="img/icon.ico" alt="Magic! icon">
+<img src="img/icon.gif" alt="Magic! icon">
 </div>
 
 <div>
