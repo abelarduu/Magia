@@ -144,7 +144,7 @@ class Player:
 
         if self.staff == True:
             #scores na tela
-            pyxel.text(45, 5, f"{self.scores}", 7)
+            pyxel.text(pyxel.width/2 - len(str(self.scores))/2 *4, 5, f"{self.scores}", 7)
 
         if not self.life > 0:
             #game over na tela

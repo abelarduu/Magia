@@ -1,4 +1,4 @@
-#importações
+ #importações
 import pyxel
 from components import  player
 from levels import block, button, item, mob
@@ -7,7 +7,7 @@ class Game:
     def __init__(self) -> None:
         #configurando a tela
         self.window_x, self.window_y = 100,100
-        pyxel.init(self.window_x, self.window_y, title="Magic!")
+        pyxel.init(self.window_x, self.window_y, title="Magia")
         
         #importando recursos
         #iniciando musica
@@ -137,7 +137,7 @@ class Game:
         #Menu inicial
         else:
             #Nome do game na tela
-            pyxel.text(self.window_x/2 -13, 30, "Magic!", pyxel.frame_count % 16)
+            pyxel.text(self.window_x/2 - len("Magia")/2 *4, 30, "Magia", pyxel.frame_count % 16)
             #enquanto não clicar no botão play,ele ficará na tela
             button.ButtonPlay.DrawButton()
             button.ButtonCredits.DrawButton()
