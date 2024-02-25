@@ -1,30 +1,17 @@
 <div align="center">
-<div>
-<img src="img/icon.gif" alt="Magic! icon">
-</div>
+<img src="img/icon.gif" type="image/png" alt="Magic! icon">
 
-<div>
-  <h4>🚧⚠️Em desenvolvimento...⚠️🚧</h4>
-</div>
-  
-<div>
-    <h3>Sobre o projeto</h3>
-    <p>Controle um mago, lute contra goblins e sobreviva o máximo possível.</p>
-    <p>Criado através da linguagem python, utilizando a interface gráfica da game engine Pyxel.</p>
-  
-  <p>
-    <a href="https://www.python.org/">
-      <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python V.3.12.1" ></a>
-    <a href="https://github.com/kitao/pyxel">
-      <img src="https://img.shields.io/badge/Pyxel-v2.0.2-blue?style=for-the-badge&logo=python&logoColor=white" alt="Pyxel V.2.0.2" ></a>
-  </p>
-  
-<div>
-  <h3>Resultado</h3>
-  <img src="img/interface.png" type="image/png" alt="Interface do Magic!" width=317px>
-  <img src="img/Magic!.gif" type="image/gif" alt="Magic! gif" width=313px>
-</div>
-</div>
+### Sobre o projeto
+### 🚧⚠️Em desenvolvimento...⚠️🚧
 
-  
-  
+Controle um mago, lute contra goblins e sobreviva o máximo possível.
+
+Criado através da linguagem python, utilizando a interface gráfica da game engine Pyxel.
+
+ [![Python V.3.12.1](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+ [![Pyxel V.2.0.2](https://img.shields.io/badge/Pyxel-v2.0.2-blue?style=for-the-badge&logo=python&logoColor=white)](https://github.com/kitao/pyxel)
+
+### Resultado
+<img src="img/interface.png" type="image/png" alt="Interface do Magic!" width=317px>
+<img src="img/Magic!.gif" type="image/gif" alt="Magic! gif" width=313px>
+</div>
