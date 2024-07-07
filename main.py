@@ -12,32 +12,17 @@ class Game:
     def update(self):
         """Verifica interação a cada quadro."""
         if self.play:
-            #Colisões
-            #Colisão com o goblin
-            if (player.check_collision(goblin_lancer) or 
-                player.check_collision(spear)):
-                player.animate_and_apply_damage()
 
-            #Colisão com o cajado
-            if player.check_collision(staff):
-                staff.move_off_screen()
-                player.staff = True
-                player.imgy = 16
-                
-            #Colisão com o cogumelo
-            if player.check_collision(mushroom):
-                mushroom.move_off_screen()
-                mushroom.x = randint(0, SCREEN_W - mushroom.w*3)
-                player.power = True
-                player.score += 5
-                player.imgy = 32
-
-            #Colisão com a moeda
-            if player.check_collision(coin):
-                coin.move_off_screen()
-                coin.x = randint(0, SCREEN_W - coin.w*3)
-                player.score += 1
+            MOVE_HOLD = 12
+            MOVE_REPEAT = 3
+            #Movimentação do Player
+            player.move(left= pyxel.btnp(pyxel.KEY_A, hold=MOVE_HOLD, repeat=MOVE_REPEAT),
+                        right= pyxel.btnp(pyxel.KEY_D, hold=MOVE_HOLD, repeat=MOVE_REPEAT),
+                        jump= pyxel.btnp(pyxel.KEY_W, hold=MOVE_HOLD, repeat=MOVE_REPEAT),
+                        attack= pyxel.btn(pyxel.KEY_E))
             
+            self.check_player_collisions()
+                        
             #Se Player estiver com cajado
             if player.staff:
                 if not player.power:
@@ -57,27 +42,46 @@ class Game:
                 goblin_lancer.move(left= goblin_lancer.x >= GOBLIN_POSITION,
                                    attack= (goblin_lancer.x <= GOBLIN_POSITION and
                                    spear.x == -16))
-            
-            MOVE_HOLD = 12
-            MOVE_REPEAT = 3
-            #Movimentação do Player
-            player.move(left= pyxel.btnp(pyxel.KEY_A, hold=MOVE_HOLD, repeat=MOVE_REPEAT),
-                        right= pyxel.btnp(pyxel.KEY_D, hold=MOVE_HOLD, repeat=MOVE_REPEAT),
-                        jump= pyxel.btnp(pyxel.KEY_W, hold=MOVE_HOLD, repeat=MOVE_REPEAT),
-                        attack= pyxel.btn(pyxel.KEY_E))
-                        
-
-            GOBLIN_POSITION= SCREEN_W - goblin_lancer.w
-            if (goblin_lancer.x <= GOBLIN_POSITION and spear.x <= -16): 
-                spear.x = GOBLIN_POSITION - spear.w
-            else:
-                spear.x -= 2
+                                   
+                #Movimentação da Lanca do goblin lanceiro
+                if (goblin_lancer.x <= GOBLIN_POSITION and spear.x <= -16): 
+                    spear.x = GOBLIN_POSITION - spear.w
+                else:
+                    spear.x -= 2
                         
         #Menu Inicial
         else:
             #Verificação de interação para inicialização do Game
             if pyxel.btnr(pyxel.KEY_KP_ENTER):
                 self.play = True
+    
+    def check_player_collisions(self):
+        """Código para verificar colisões entre objetos."""
+        #Colisões
+        #Colisão com o goblin
+        if (player.check_collision(goblin_lancer) or 
+            player.check_collision(spear)):
+            player.animate_and_apply_damage()
+
+        #Colisão com o cajado
+        if player.check_collision(staff):
+            staff.move_off_screen()
+            player.staff = True
+            player.imgy = 16
+            
+        #Colisão com o cogumelo
+        if player.check_collision(mushroom):
+            mushroom.move_off_screen()
+            mushroom.x = randint(0, SCREEN_W - mushroom.w*3)
+            player.power = True
+            player.score += 5
+            player.imgy = 32
+
+        #Colisão com a moeda
+        if player.check_collision(coin):
+            coin.move_off_screen()
+            coin.x = randint(0, SCREEN_W - coin.w*3)
+            player.score += 1
     
     def draw(self):
         """atualiza a interface a cada quadro."""
