@@ -71,7 +71,7 @@ class Game:
             if (goblin_lancer.x <= GOBLIN_POSITION and spear.x <= -16): 
                 spear.x = GOBLIN_POSITION - spear.w
             else:
-                spear.x -= 2 
+                spear.x -= 2
                         
         #Menu Inicial
         else:
