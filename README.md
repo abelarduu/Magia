@@ -1,6 +1,5 @@
 <div align="center">
-<img src="img/icon.gif" type="image/png" alt="Magic! icon">
-
+ 
 ### Sobre o projeto
 ### 🚧⚠️Em desenvolvimento...⚠️🚧
 
@@ -13,3 +12,4 @@ Criado através da linguagem python, utilizando a interface gráfica da game eng
 
 ### Resultado
 ![Gameplay](img/gameplay.gif)
+</div>
