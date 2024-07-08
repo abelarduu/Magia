@@ -15,7 +15,7 @@ goblin_shaman = Entity(160, 68, 1, 0, 80, 16, 16)
 
 revived_goblin_shaman = Entity(160, 68, 1, 0, 96, 16, 16)
 
-seller= Entity(160, 68, 1, 0, 112, 16, 16)
+seller = Entity(160, 68, 1, 0, 112, 16, 16)
 entities_list = [player, goblin_lancer, goblin_bomber,
                  goblin_shaman, revived_goblin_shaman, seller]
 

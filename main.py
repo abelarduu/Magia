@@ -38,7 +38,7 @@ class Game:
                             entity.update_sprite()
                             
                 #Movimentação do Goblin Lanceiro
-                GOBLIN_POSITION= SCREEN_W - goblin_lancer.w
+                GOBLIN_POSITION = SCREEN_W - goblin_lancer.w
                 goblin_lancer.move(left= goblin_lancer.x >= GOBLIN_POSITION,
                                    attack= (goblin_lancer.x <= GOBLIN_POSITION and
                                    spear.x == -16))
@@ -87,7 +87,7 @@ class Game:
         """atualiza a interface a cada quadro."""
         pyxel.cls(0)
         pyxel.mouse(True)
-
+        
         if self.play:
             #Desenhando Entidades
             for entity in entities_list:

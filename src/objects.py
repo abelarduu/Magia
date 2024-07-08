@@ -20,7 +20,7 @@ class Object:
         self.total_frames = 8
         
     def update_sprite(self):
-        """Atualiza o sprite do jogador para a próxima imagem de animação."""
+        """Atualiza o sprite do objeto para a próxima imagem de animação."""
         self.imgx = (self.imgx + self.w) % (self.w * self.total_frames)
     
     def check_collision(self, obj) -> bool:
@@ -34,14 +34,14 @@ class Object:
         return False
     
     def apply_gravity(self):
-        """Aplica a gravidade ao jogador."""
+        """Aplica a gravidade ao objeto."""
         if self.y < GROUND_LEVEL - self.h:
             self.y += GRAVITY
         else:
             self.jump = True
     
     def draw(self):
-        """Desenha o jogador na tela."""
+        """Desenha o objeto na tela."""
         pyxel.blt(self.x, 
                   self.y,
                   self.img,
@@ -69,8 +69,8 @@ class Entity(Object):
         self.staff = False
         
     def move(self, left, right= None, jump= None, attack= None):
-        """Atualiza a posição do jogador com base na entrada do usuário e aplica a gravidade."""
-        if self.life:
+        """Atualiza a posição da entidade com base na condições colocadas e aplica a gravidade."""
+        if self.life > 0:
             #Mov
             if left:
                 self.move_left()
@@ -89,13 +89,13 @@ class Entity(Object):
 
 
     def move_left(self):
-        """Move o jogador para a esquerda."""
+        """Move a entidade para a esquerda."""
         if self.x > 0:
             self.update_sprite()
             self.x -= MOVE_SPEED
 
     def move_right(self):
-        """Move o jogador para a direita."""
+        """Move a entidade para a direita."""
         if self.x < 140 - self.w:
             self.update_sprite()
             self.x += MOVE_SPEED
@@ -109,15 +109,16 @@ class Entity(Object):
 
     def attack(self):
         """Muda para a sprite de ataque e executa o ataque."""
-        self.attacked= True
+        self.attacked = True
         self.imgx = 128
         
     def animate_and_apply_damage(self):
         """Muda para a sprite de HIT e aplica dano."""
         if self.power:
-            self.imgy= 16
-            self.power= False
+            self.imgy = 16
+            self.power = False
+        self.life -= 1
             
-        self.imgx=  144
-        if self.x >=11:
+        self.imgx = 144
+        if self.x >= 11:
             self.x -= 10
