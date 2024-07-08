@@ -6,7 +6,7 @@ class Game:
         self.play = False
         pyxel.init(SCREEN_W, SCREEN_H, title= "Magia")
         pyxel.load('src/assets/magia.pyxres')
-        pyxel.playm(0, loop= True)
+        #pyxel.playm(0, loop= True)
         pyxel.run(self.update, self.draw)
 
     def update(self):
@@ -38,10 +38,10 @@ class Game:
                             entity.update_sprite()
                             
                 #Movimentação do Goblin Lanceiro
-                GOBLIN_POSITION = SCREEN_W - goblin_lancer.w
+                GOBLIN_POSITION= SCREEN_W - goblin_lancer.w
                 goblin_lancer.move(left= goblin_lancer.x >= GOBLIN_POSITION,
                                    attack= (goblin_lancer.x <= GOBLIN_POSITION and
-                                   spear.x == -16))
+                                   spear.x <= -16))
                                    
                 #Movimentação da Lanca do goblin lanceiro
                 if (goblin_lancer.x <= GOBLIN_POSITION and spear.x <= -16): 
@@ -87,7 +87,7 @@ class Game:
         """atualiza a interface a cada quadro."""
         pyxel.cls(0)
         pyxel.mouse(True)
-        
+
         if self.play:
             #Desenhando Entidades
             for entity in entities_list:
@@ -115,7 +115,7 @@ class Game:
     def draw_floor(self):
         """Desenha o chão usando um tileset, um bloco de cada vez."""
         for x in range(3):
-            pyxel.blt(x * 48, pyxel.height - 16, 1, 0, 128, 48, 16)
+            pyxel.blt(x * 48, pyxel.height - 16, 1, 73, 128, 48, 16)
 
 if __name__ == "__main__":
     Game()
