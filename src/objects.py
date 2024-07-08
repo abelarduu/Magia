@@ -55,8 +55,6 @@ class Object:
         """Remove/move objeto para fora da tela."""
         self.y = -16
                         
-
-    
 class Entity(Object):
     def __init__(self, *args):
         super().__init__(*args)
@@ -85,8 +83,7 @@ class Entity(Object):
             if attack:
                 self.attack()
 
-            self.apply_gravity()
-
+        self.apply_gravity()
 
     def move_left(self):
         """Move a entidade para a esquerda."""
@@ -109,8 +106,9 @@ class Entity(Object):
 
     def attack(self):
         """Muda para a sprite de ataque e executa o ataque."""
-        self.attacked = True
-        self.imgx = 128
+        if not self.attacked:
+            self.imgx = 128
+            self.attacked = True
         
     def animate_and_apply_damage(self):
         """Muda para a sprite de HIT e aplica dano."""

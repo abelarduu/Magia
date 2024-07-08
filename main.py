@@ -19,24 +19,30 @@ class Game:
             player.move(left= pyxel.btnp(pyxel.KEY_A, hold=MOVE_HOLD, repeat=MOVE_REPEAT),
                         right= pyxel.btnp(pyxel.KEY_D, hold=MOVE_HOLD, repeat=MOVE_REPEAT),
                         jump= pyxel.btnp(pyxel.KEY_W, hold=MOVE_HOLD, repeat=MOVE_REPEAT),
-                        attack= pyxel.btn(pyxel.KEY_E))
+                        attack= pyxel.btnp(pyxel.KEY_E) and player.staff)
             
             self.check_player_collisions()
-                        
+            self.check_player_attacked()
+            
             #Se Player estiver com cajado
             if player.staff:
                 if not player.power:
                     mushroom.apply_gravity()
-
                 coin.apply_gravity()
-                if pyxel.frame_count % 4 == 0:
-                    coin.update_sprite()
-                    
-                    #Animando Mobs
-                    for entity in entities_list:
-                        if not entity == player:
+                
+                #Animando itens
+                for item in items_list:
+                    if (not item == spear and not item == staff):
+                        if pyxel.frame_count % 4 == 0:
+                            item.update_sprite()
+                
+                #Animando Mobs
+                for entity in entities_list:
+                    if not entity == player:
+                        if pyxel.frame_count % 4 == 0:
                             entity.update_sprite()
-                            
+                        
+                
                 #Movimentação do Goblin Lanceiro
                 GOBLIN_POSITION= SCREEN_W - goblin_lancer.w
                 goblin_lancer.move(left= goblin_lancer.x >= GOBLIN_POSITION,
@@ -54,6 +60,18 @@ class Game:
             #Verificação de interação para inicialização do Game
             if pyxel.btnr(pyxel.KEY_KP_ENTER):
                 self.play = True
+                
+    def check_player_attacked(self):
+        #Ataque do player
+        if player.staff:
+            if player.attacked:
+                fireball.x = player.x +player.w
+                fireball.y = player.y
+                player.attacked = False
+
+            #Movimento da bola de fogo
+            if fireball.x <= SCREEN_W:
+                fireball.x += 2
     
     def check_player_collisions(self):
         """Código para verificar colisões entre objetos."""
@@ -86,15 +104,14 @@ class Game:
     def draw(self):
         """atualiza a interface a cada quadro."""
         pyxel.cls(0)
-        pyxel.mouse(True)
+        self.draw_floor()
 
         if self.play:
             #Desenhando Entidades
             for entity in entities_list:
                 entity.draw()
-            
+
             #Desenhando Objetos
-            self.draw_floor()
             for obj in items_list:
                 obj.draw()
 
@@ -115,7 +132,7 @@ class Game:
     def draw_floor(self):
         """Desenha o chão usando um tileset, um bloco de cada vez."""
         for x in range(3):
-            pyxel.blt(x * 48, pyxel.height - 16, 1, 73, 128, 48, 16)
+            pyxel.blt(x * 48, pyxel.height - 16, 1, 72, 128, 48, 16)
 
 if __name__ == "__main__":
     Game()

@@ -19,13 +19,16 @@ seller = Entity(160, 68, 1, 0, 112, 16, 16)
 entities_list = [player, goblin_lancer, goblin_bomber,
                  goblin_shaman, revived_goblin_shaman, seller]
 
-# Objects
-coin = Object(0, -16, 1, 0, 137, 6, 6)
+# Objects/Itens
+coin = Object(0, -16, 1, 0, 145, 6, 6)
 coin.x = randint(0, SCREEN_W - coin.w*3)
 
-mushroom = Object(0, -16, 1, 137, 118, 8, 8)
+mushroom = Object(0, -16, 1, 0, 137, 8, 8)
 mushroom.x = randint(0, SCREEN_W -  mushroom.w*3)
 
 staff = Object(SCREEN_W / 2 - 2, SCREEN_H - 32, 1, 128, 113, 3, 15)
+
+fireball = Object(0, -16, 1, 0, 128, 9, 9)
+
 spear = Object(-16, 76, 1, 133, 113, 15, 3)
-items_list = [coin, mushroom, staff, spear]
+items_list = [coin, mushroom, staff, fireball, spear]
