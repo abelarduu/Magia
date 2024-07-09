@@ -106,9 +106,8 @@ class Entity(Object):
 
     def attack(self):
         """Muda para a sprite de ataque e executa o ataque."""
-        if not self.attacked:
-            self.imgx = 128
-            self.attacked = True
+        self.imgx = 128
+        self.attacked = True
         
     def animate_and_apply_damage(self):
         """Muda para a sprite de HIT e aplica dano."""

@@ -30,26 +30,13 @@ class Game:
                     mushroom.apply_gravity()
                 coin.apply_gravity()
                 
-                #Animando itens
-                for item in items_list:
-                    if (not item == spear and not item == staff):
-                        if pyxel.frame_count % 4 == 0:
-                            item.update_sprite()
-                
-                #Animando Mobs
-                for entity in entities_list:
-                    if not entity == player:
-                        if pyxel.frame_count % 4 == 0:
-                            entity.update_sprite()
-                        
-                
                 #Movimentação do Goblin Lanceiro
                 GOBLIN_POSITION= SCREEN_W - goblin_lancer.w
                 goblin_lancer.move(left= goblin_lancer.x >= GOBLIN_POSITION,
                                    attack= (goblin_lancer.x <= GOBLIN_POSITION and
                                    spear.x <= -16))
                                    
-                #Movimentação da Lanca do goblin lanceiro
+                #Movimentação da Lanca do goblin lanceiro 
                 if (goblin_lancer.x <= GOBLIN_POSITION and spear.x <= -16): 
                     spear.x = GOBLIN_POSITION - spear.w
                 else:
@@ -62,6 +49,7 @@ class Game:
                 self.play = True
                 
     def check_player_attacked(self):
+        """Verifica se o player ativou o ataque e executa o ataque."""
         #Ataque do player
         if player.staff:
             if player.attacked:
@@ -110,10 +98,21 @@ class Game:
             #Desenhando Entidades
             for entity in entities_list:
                 entity.draw()
+                
+                #Animando entidades/Mobs
+                if not entity == player:
+                    if pyxel.frame_count % 4 == 0:
+                        entity.update_sprite()
 
-            #Desenhando Objetos
-            for obj in items_list:
-                obj.draw()
+            #Desenhando itens
+            for item in items_list:
+                item.draw()
+                
+                #Animando itens
+                if (not item == spear and not item == staff):
+                    if pyxel.frame_count % 4 == 0:
+                        item.update_sprite()
+
 
             #Se o player estiver com o cajado
             if player.staff:
