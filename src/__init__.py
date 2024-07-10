@@ -26,9 +26,9 @@ coin.x = randint(0, SCREEN_W - coin.w*3)
 mushroom = Object(0, -16, 1, 0, 137, 8, 8)
 mushroom.x = randint(0, SCREEN_W -  mushroom.w*3)
 
-staff = Object(SCREEN_W / 2 - 2, SCREEN_H - 32, 1, 128, 113, 3, 15)
+staff = Object(SCREEN_W / 2 - 2, SCREEN_H - 32, 1, 0, 151, 3, 15)
 
-fireball = Object(0, -16, 1, 0, 128, 9, 9)
+fireball = Object(-16, -16, 1, 0, 128, 9, 9)
 
 spear = Object(-16, 76, 1, 133, 113, 15, 3)
 items_list = [coin, mushroom, staff, fireball, spear]

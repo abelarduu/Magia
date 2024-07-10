@@ -19,7 +19,7 @@ class Game:
             player.move(left= pyxel.btnp(pyxel.KEY_A, hold=MOVE_HOLD, repeat=MOVE_REPEAT),
                         right= pyxel.btnp(pyxel.KEY_D, hold=MOVE_HOLD, repeat=MOVE_REPEAT),
                         jump= pyxel.btnp(pyxel.KEY_W, hold=MOVE_HOLD, repeat=MOVE_REPEAT),
-                        attack= pyxel.btnp(pyxel.KEY_E) and player.staff)
+                        attack= pyxel.btnp(pyxel.KEY_E))
             
             self.check_player_collisions()
             self.check_player_attacked()
@@ -50,20 +50,23 @@ class Game:
                 
     def check_player_attacked(self):
         """Verifica se o player ativou o ataque e executa o ataque."""
-        #Ataque do player
-        if player.staff:
-            if player.attacked:
-                fireball.x = player.x +player.w
-                fireball.y = player.y
-                player.attacked = False
-
-            #Movimento da bola de fogo
-            if fireball.x <= SCREEN_W:
-                fireball.x += 2
-    
+        if player.life > 0 and player.staff:
+            #Se o player não atacou
+            if not player.attacking:
+                if pyxel.btnp(pyxel.KEY_E):
+                    fireball.x = player.x + player.w
+                    fireball.y = player.y
+                    player.attacking = True
+            
+            if player.attacking:
+                #Movimento da bola de fogo
+                if fireball.x <= SCREEN_W:
+                    fireball.x += 2
+                else:  
+                    player.attacking = False
+                    
     def check_player_collisions(self):
         """Código para verificar colisões entre objetos."""
-        #Colisões
         #Colisão com o goblin
         if (player.check_collision(goblin_lancer) or 
             player.check_collision(spear)):
@@ -94,6 +97,7 @@ class Game:
         pyxel.cls(0)
         self.draw_floor()
 
+
         if self.play:
             #Desenhando Entidades
             for entity in entities_list:
@@ -103,16 +107,15 @@ class Game:
                 if not entity == player:
                     if pyxel.frame_count % 4 == 0:
                         entity.update_sprite()
-
+                        
             #Desenhando itens
             for item in items_list:
                 item.draw()
                 
                 #Animando itens
-                if (not item == spear and not item == staff):
+                if not item == spear:
                     if pyxel.frame_count % 4 == 0:
                         item.update_sprite()
-
 
             #Se o player estiver com o cajado
             if player.staff:
@@ -125,8 +128,10 @@ class Game:
         #Menu Inicial
         else:
             pyxel.blt(0, 0, 0, 0, 0, 140, 100, 0)
-            center_txt = len("Enter para continuar") / 2 * pyxel.FONT_WIDTH
-            pyxel.text(pyxel.width / 2 - center_txt, SCREEN_H - 16, "Enter para continuar", 7)
+            
+            TXT = "Enter para continuar"
+            center_txt = len(TXT) / 2 * pyxel.FONT_WIDTH
+            pyxel.text(pyxel.width / 2 - center_txt, SCREEN_H - 16, TXT, 7)
 
     def draw_floor(self):
         """Desenha o chão usando um tileset, um bloco de cada vez."""
