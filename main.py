@@ -6,7 +6,7 @@ class Game:
         self.play = False
         pyxel.init(SCREEN_W, SCREEN_H, title= "Magia")
         pyxel.load('src/assets/magia.pyxres')
-        #pyxel.playm(0, loop= True)
+        pyxel.playm(0, loop= True)
         pyxel.run(self.update, self.draw)
 
     def update(self):
@@ -22,7 +22,6 @@ class Game:
                         attack= pyxel.btnp(pyxel.KEY_E))
             
             self.check_player_collisions()
-            self.check_player_attacked()
             
             #Se Player estiver com cajado
             if player.staff:
@@ -35,12 +34,19 @@ class Game:
                 goblin_lancer.move(left= goblin_lancer.x >= GOBLIN_POSITION,
                                    attack= (goblin_lancer.x <= GOBLIN_POSITION and
                                    spear.x <= -16))
-                                   
-                #Movimentação da Lanca do goblin lanceiro 
-                if (goblin_lancer.x <= GOBLIN_POSITION and spear.x <= -16): 
-                    spear.x = GOBLIN_POSITION - spear.w
+               
+                #Movimentação dos ataques
+                #Lanca do goblin lanceiro 
+                if spear.x <= -16: 
+                    goblin_lancer.attacking = False
                 else:
                     spear.x -= 2
+
+                #Movimento da bola de fogo
+                if fireball.x >= SCREEN_W:
+                    player.attacking = False
+                else:  
+                   fireball.x += 2
                         
         #Menu Inicial
         else:
@@ -48,27 +54,10 @@ class Game:
             if pyxel.btnr(pyxel.KEY_KP_ENTER):
                 self.play = True
                 
-    def check_player_attacked(self):
-        """Verifica se o player ativou o ataque e executa o ataque."""
-        if player.life > 0 and player.staff:
-            #Se o player não atacou
-            if not player.attacking:
-                if pyxel.btnp(pyxel.KEY_E):
-                    fireball.x = player.x + player.w
-                    fireball.y = player.y
-                    player.attacking = True
-            
-            if player.attacking:
-                #Movimento da bola de fogo
-                if fireball.x <= SCREEN_W:
-                    fireball.x += 2
-                else:  
-                    player.attacking = False
-                    
     def check_player_collisions(self):
         """Código para verificar colisões entre objetos."""
         #Colisão com o goblin
-        if (player.check_collision(goblin_lancer) or 
+        if (player.check_collision(goblin_lancer) or
             player.check_collision(spear)):
             player.animate_and_apply_damage()
 

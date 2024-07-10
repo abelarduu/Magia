@@ -65,6 +65,7 @@ class Entity(Object):
         self.power = False
         self.attacking = False
         self.staff = False
+        self.weapon= None
         
     def move(self, left, right= None, jump= None, attack= None):
         """Atualiza a posição da entidade com base na condições colocadas e aplica a gravidade."""
@@ -107,6 +108,14 @@ class Entity(Object):
     def attack(self):
         """Muda para a sprite de ataque e executa o ataque."""
         self.imgx = 128
+
+        if not self.attacking and self.weapon:
+            POS_X = self.x + self.w/2
+            POS_Y = self.y + (self.h/2) - self.weapon.h/2
+            self.weapon.x = POS_X
+            self.weapon.y = POS_Y
+
+            self.attacking = True
         
     def animate_and_apply_damage(self):
         """Muda para a sprite de HIT e aplica dano."""
