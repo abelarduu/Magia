@@ -110,17 +110,20 @@ class Game:
             if player.staff:
                 center_score = len(str(player.score)) / 2 * pyxel.FONT_WIDTH
                 pyxel.text(pyxel.width / 2 - center_score, 5, str(player.score), 7)
+            
+            #Tutorial
             else:
-                center_txt = len("Pegue o cajado...") / 2 * pyxel.FONT_WIDTH
-                pyxel.text(pyxel.width / 2 - center_txt, pyxel.height / 2 - 32, "Pegue o cajado...", 7)
+                TXT= "Pegue o cajado..."
+                CENTER_TXT = len(TXT) / 2 * pyxel.FONT_WIDTH
+                pyxel.text(pyxel.width / 2 - CENTER_TXT, pyxel.height / 2 - 32, TXT, 7)
         
         #Menu Inicial
         else:
             pyxel.blt(0, 0, 0, 0, 0, 140, 100, 0)
             
             TXT = "Enter para continuar"
-            center_txt = len(TXT) / 2 * pyxel.FONT_WIDTH
-            pyxel.text(pyxel.width / 2 - center_txt, SCREEN_H - 16, TXT, 7)
+            CENTER_TXT = len(TXT) / 2 * pyxel.FONT_WIDTH
+            pyxel.text(pyxel.width / 2 - CENTER_TXT, SCREEN_H - 16, TXT, 7)
 
     def draw_floor(self):
         """Desenha o chão usando um tileset, um bloco de cada vez."""
