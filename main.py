@@ -19,7 +19,7 @@ class Game:
             player.move(left= pyxel.btnp(pyxel.KEY_A, hold= MOVE_HOLD, repeat= MOVE_REPEAT),
                         right= pyxel.btnp(pyxel.KEY_D, hold= MOVE_HOLD, repeat= MOVE_REPEAT),
                         jump= pyxel.btnp(pyxel.KEY_W, hold= MOVE_HOLD, repeat= MOVE_REPEAT),
-                        attack= pyxel.btnp(pyxel.KEY_E))
+                        attack= pyxel.btnp(pyxel.KEY_E) and player.staff)
             
             self.check_player_collisions()
 
@@ -116,6 +116,11 @@ class Game:
                 pyxel.text(pyxel.width / 2 - center_score, 5, str(player.score), 7)
                 
             else:
+                #art/sprite TUTORIAL WASDE
+                CENTER_X= SCREEN_W/2 - (50/2)
+                CENTER_Y= SCREEN_H/2 - (34/2)- 8
+                pyxel.blt(CENTER_X, CENTER_Y, 0, 0, 100, 50, 34, 0)
+                
                 TXT= "Mova-se e pegue o cajado..."
                 CENTER_TXT = len(TXT) / 2 * pyxel.FONT_WIDTH
                 pyxel.text(pyxel.width / 2 - CENTER_TXT, pyxel.height / 2 - 32, TXT, 7)
