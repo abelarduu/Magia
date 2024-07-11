@@ -57,7 +57,8 @@ class Game:
         #Menu Inicial
         else:
             #Verificação de interação para inicialização do Game
-            if pyxel.btnr(pyxel.KEY_KP_ENTER):
+            if (pyxel.btnp(pyxel.KEY_KP_ENTER) or
+                pyxel.btnp(pyxel.KEY_RETURN)):
                 self.tutorial = True
                 
     def check_player_collisions(self):
@@ -116,7 +117,7 @@ class Game:
                 pyxel.text(pyxel.width / 2 - center_score, 5, str(player.score), 7)
                 
             else:
-                #art/sprite TUTORIAL WASDE
+                #art/sprite TUTORIAL W A S D E
                 CENTER_X= SCREEN_W/2 - (50/2)
                 CENTER_Y= SCREEN_H/2 - (34/2)- 8
                 pyxel.blt(CENTER_X, CENTER_Y, 0, 0, 100, 50, 34, 0)
