@@ -3,7 +3,7 @@ import pyxel
 #Constantes
 MOVE_HOLD = 12
 MOVE_REPEAT = 3
-JUMP_HEIGHT = 15
+JUMP_HEIGHT = 16
 MOVE_SPEED = 2
 GRAVITY = 0.4
 GROUND_LEVEL = 100 - 16
@@ -64,8 +64,7 @@ class Entity(Object):
         self.jump = True
         self.power = False
         self.attacking = False
-        self.staff = False
-        self.weapon= None
+        self.attack_item= None
         
     def move(self, left, right= None, jump= None, attack= None):
         """Atualiza a posição da entidade com base na condições colocadas e aplica a gravidade."""
@@ -109,11 +108,11 @@ class Entity(Object):
         """Muda para a sprite de ataque e executa o ataque."""
         self.imgx = 128
 
-        if not self.attacking and self.weapon:
+        if not self.attacking and self.attack_item:
             POS_X = self.x + self.w/2
-            POS_Y = self.y + (self.h/2) - self.weapon.h/2
-            self.weapon.x = POS_X
-            self.weapon.y = POS_Y
+            POS_Y = self.y + (self.h/2) - self.attack_item.h/2
+            self.attack_item.x = POS_X
+            self.attack_item.y = POS_Y
 
             self.attacking = True
         

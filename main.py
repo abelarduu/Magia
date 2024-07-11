@@ -4,6 +4,7 @@ from src import *
 class Game:
     def __init__(self):
         self.play = False
+        self.tutorial = False
         pyxel.init(SCREEN_W, SCREEN_H, title= "Magia")
         pyxel.load('src/assets/magia.pyxres')
         pyxel.playm(0, loop= True)
@@ -11,20 +12,25 @@ class Game:
 
     def update(self):
         """Verifica interação a cada quadro."""
-        if self.play:
-
+        if self.tutorial or self.play:
             MOVE_HOLD = 12
             MOVE_REPEAT = 3
             #Movimentação do Player
-            player.move(left= pyxel.btnp(pyxel.KEY_A, hold=MOVE_HOLD, repeat=MOVE_REPEAT),
-                        right= pyxel.btnp(pyxel.KEY_D, hold=MOVE_HOLD, repeat=MOVE_REPEAT),
-                        jump= pyxel.btnp(pyxel.KEY_W, hold=MOVE_HOLD, repeat=MOVE_REPEAT),
+            player.move(left= pyxel.btnp(pyxel.KEY_A, hold= MOVE_HOLD, repeat= MOVE_REPEAT),
+                        right= pyxel.btnp(pyxel.KEY_D, hold= MOVE_HOLD, repeat= MOVE_REPEAT),
+                        jump= pyxel.btnp(pyxel.KEY_W, hold= MOVE_HOLD, repeat= MOVE_REPEAT),
                         attack= pyxel.btnp(pyxel.KEY_E))
             
             self.check_player_collisions()
-            
-            #Se Player estiver com cajado
+
+            #Se Player estiver com cajado:
+            #Acaba o tutorial
             if player.staff:
+                self.play = True
+                self.tutorial = False
+                
+            if self.play:
+                #Gravidade nos itens
                 if not player.power:
                     mushroom.apply_gravity()
                 coin.apply_gravity()
@@ -34,9 +40,9 @@ class Game:
                 goblin_lancer.move(left= goblin_lancer.x >= GOBLIN_POSITION,
                                    attack= (goblin_lancer.x <= GOBLIN_POSITION and
                                    spear.x <= -16))
-               
+
                 #Movimentação dos ataques
-                #Lanca do goblin lanceiro 
+                #Lanca do goblin lanceiro
                 if spear.x <= -16: 
                     goblin_lancer.attacking = False
                 else:
@@ -47,12 +53,12 @@ class Game:
                     player.attacking = False
                 else:  
                    fireball.x += 2
-                        
+
         #Menu Inicial
         else:
             #Verificação de interação para inicialização do Game
             if pyxel.btnr(pyxel.KEY_KP_ENTER):
-                self.play = True
+                self.tutorial = True
                 
     def check_player_collisions(self):
         """Código para verificar colisões entre objetos."""
@@ -86,8 +92,7 @@ class Game:
         pyxel.cls(0)
         self.draw_floor()
 
-
-        if self.play:
+        if self.tutorial or self.play:
             #Desenhando Entidades
             for entity in entities_list:
                 entity.draw()
@@ -105,15 +110,13 @@ class Game:
                 if not item == spear:
                     if pyxel.frame_count % 4 == 0:
                         item.update_sprite()
-
-            #Se o player estiver com o cajado
-            if player.staff:
+                        
+            if self.play:
                 center_score = len(str(player.score)) / 2 * pyxel.FONT_WIDTH
                 pyxel.text(pyxel.width / 2 - center_score, 5, str(player.score), 7)
-            
-            #Tutorial
+                
             else:
-                TXT= "Pegue o cajado..."
+                TXT= "Mova-se e pegue o cajado..."
                 CENTER_TXT = len(TXT) / 2 * pyxel.FONT_WIDTH
                 pyxel.text(pyxel.width / 2 - CENTER_TXT, pyxel.height / 2 - 32, TXT, 7)
         
