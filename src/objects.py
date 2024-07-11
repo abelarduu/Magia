@@ -60,7 +60,7 @@ class Entity(Object):
         super().__init__(*args)
         
         self.life = 3
-        self.score = 0
+        self.scores = 0
         self.jump = True
         self.power = False
         self.attacking = False

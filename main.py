@@ -36,7 +36,7 @@ class Game:
                 coin.apply_gravity()
                 
                 #Movimentação do Goblin Lanceiro
-                GOBLIN_POSITION= SCREEN_W - goblin_lancer.w
+                GOBLIN_POSITION = SCREEN_W - goblin_lancer.w
                 goblin_lancer.move(left= goblin_lancer.x >= GOBLIN_POSITION,
                                    attack= (goblin_lancer.x <= GOBLIN_POSITION and
                                    spear.x <= -16))
@@ -54,13 +54,53 @@ class Game:
                 else:  
                    fireball.x += 2
 
+            #Reset Game
+            if player.life < 0:
+                if (pyxel.btnr(pyxel.KEY_KP_ENTER) or
+                    pyxel.btnr(pyxel.KEY_RETURN)):
+
+                    self.reset_game_objects()
+                    self.tutorial = False
+                    self.play = False
+
         #Menu Inicial
         else:
             #Verificação de interação para inicialização do Game
             if (pyxel.btnp(pyxel.KEY_KP_ENTER) or
                 pyxel.btnp(pyxel.KEY_RETURN)):
                 self.tutorial = True
-                
+
+    def reset_game_objects(self):
+        """Reseta todos atributos dos objetos e entidades do game."""
+        #Resetando tudo
+        #Objetos/Itens
+        coin.x = randint(0, SCREEN_W - coin.w*3)
+        coin.y =  -16
+
+        mushroom.x = randint(0, SCREEN_W -  mushroom.w*3)
+        mushroom.y = -16
+
+        staff.x = SCREEN_W / 2 - 2
+        staff.y = SCREEN_H - 32
+
+        fireball.x = -16
+        fireball.y =  -16
+
+        spear.x = -16
+        spear.y = 76
+
+        #Entitades
+        player.x = 10
+        player.y = 68
+        player.imgx = 0
+        player.imgy = 0
+        player.life = 3
+        player.staff = False
+        player.scores = 0
+
+        goblin_lancer.x = 160
+        goblin_lancer.y = 68
+
     def check_player_collisions(self):
         """Código para verificar colisões entre objetos."""
         #Colisão com o goblin
@@ -79,14 +119,14 @@ class Game:
             mushroom.move_off_screen()
             mushroom.x = randint(0, SCREEN_W - mushroom.w*3)
             player.power = True
-            player.score += 5
+            player.scores += 5
             player.imgy = 32
 
         #Colisão com a moeda
         if player.check_collision(coin):
             coin.move_off_screen()
             coin.x = randint(0, SCREEN_W - coin.w*3)
-            player.score += 1
+            player.scores += 1
     
     def draw(self):
         """atualiza a interface a cada quadro."""
@@ -113,16 +153,16 @@ class Game:
                         item.update_sprite()
                         
             if self.play:
-                center_score = len(str(player.score)) / 2 * pyxel.FONT_WIDTH
-                pyxel.text(pyxel.width / 2 - center_score, 5, str(player.score), 7)
+                CENTER_SCORES = len(str(player.scores)) / 2 * pyxel.FONT_WIDTH
+                pyxel.text(pyxel.width / 2 - CENTER_SCORES, 5, str(player.scores), 7)
                 
             else:
                 #art/sprite TUTORIAL W A S D E
-                CENTER_X= SCREEN_W/2 - (50/2)
-                CENTER_Y= SCREEN_H/2 - (34/2)- 8
+                CENTER_X = SCREEN_W/2 - (50/2)
+                CENTER_Y = SCREEN_H/2 - (34/2) - 8
                 pyxel.blt(CENTER_X, CENTER_Y, 0, 0, 100, 50, 34, 0)
                 
-                TXT= "Mova-se e pegue o cajado..."
+                TXT = "Mova-se e pegue o cajado..."
                 CENTER_TXT = len(TXT) / 2 * pyxel.FONT_WIDTH
                 pyxel.text(pyxel.width / 2 - CENTER_TXT, pyxel.height / 2 - 32, TXT, 7)
         
