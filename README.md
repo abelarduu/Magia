@@ -1,5 +1,7 @@
 <div align="center">
  
+![Gameplay](img/icon.gif)
+ 
 ### Sobre o projeto
 ### 🚧⚠️Em desenvolvimento...⚠️🚧
 
@@ -12,4 +14,5 @@ Criado através da linguagem python, utilizando a interface gráfica da game eng
 
 ### Resultado
 ![Gameplay](img/gameplay.gif)
+
 </div>
