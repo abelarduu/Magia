@@ -40,6 +40,11 @@ class Game:
                 goblin_lancer.move(left= goblin_lancer.x >= GOBLIN_POSITION,
                                    attack= (goblin_lancer.x <= GOBLIN_POSITION and
                                    spear.x <= -16))
+                
+                # Colisão do goblin com a bola de fogo
+                if goblin_lancer.check_collision(fireball):
+                    goblin_lancer.animate_and_apply_damage()
+                    fireball.move_off_screen()
 
                 # Movimentação dos ataques
                 # Lanca do goblin lanceiro
@@ -128,7 +133,7 @@ class Game:
             coin.move_off_screen()
             coin.x = randint(0, SCREEN_W - coin.w*3)
             player.scores += 1
-    
+            
     def draw(self):
         """atualiza a interface a cada quadro."""
         pyxel.cls(0)

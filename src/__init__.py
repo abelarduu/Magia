@@ -31,6 +31,7 @@ player.staff = False
 
 goblin_lancer = Entity(160, 68, 1, 0, 48, 16, 16)
 goblin_lancer.attack_item = spear
+goblin_lancer.life = 5
 
 goblin_bomber = Entity(160, 68, 1, 0, 64, 16, 16)
 

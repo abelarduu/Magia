@@ -124,5 +124,7 @@ class Entity(Object):
         self.life -= 1
             
         self.imgx = 144
-        if self.x >= 11:
+        if self.x < 122:
             self.x -= 10
+        else:
+            self.x += 10
