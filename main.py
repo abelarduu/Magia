@@ -106,6 +106,7 @@ class Game:
 
         goblin_lancer.x = 160
         goblin_lancer.y = 68
+        goblin_lancer.life = 5
 
     def check_player_collisions(self):
         """Código para verificar colisões entre objetos."""
@@ -113,6 +114,11 @@ class Game:
         if (player.check_collision(goblin_lancer) or
             player.check_collision(spear)):
             player.animate_and_apply_damage()
+            
+            # Se colidir com a lança:
+            # Remove a lança da tela
+            if player.check_collision(spear):
+                spear.move_off_screen()
 
         # Colisão com o cajado
         if player.check_collision(staff):

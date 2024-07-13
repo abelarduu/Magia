@@ -69,7 +69,7 @@ class Entity(Object):
     def move(self, left, right= None, jump= None, attack= None):
         """Atualiza a posição da entidade com base na condições colocadas e aplica a gravidade."""
         if self.life > 0:
-            #Mov
+            # Mov
             if left:
                 self.move_left()
                 
@@ -79,7 +79,7 @@ class Entity(Object):
             if jump:
                 self.jump_action()
 
-            #Atack
+            # Atack
             if attack:
                 self.attack()
 
@@ -121,10 +121,6 @@ class Entity(Object):
         if self.power:
             self.imgy = 16
             self.power = False
-        self.life -= 1
-            
+        
         self.imgx = 144
-        if self.x < 122:
-            self.x -= 10
-        else:
-            self.x += 10
+        self.life -= 1
