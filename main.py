@@ -60,7 +60,7 @@ class Game:
                    fireball.x += 2
 
             # Reset Game
-            if player.life < 0:
+            if player.life <= 0:
                 # Verificação de interação para resetar/reniciar o Game
                 if (pyxel.btnr(pyxel.KEY_KP_ENTER) or
                     pyxel.btnr(pyxel.KEY_RETURN)):
