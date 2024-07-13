@@ -143,6 +143,7 @@ class Game:
     def draw(self):
         """atualiza a interface a cada quadro."""
         pyxel.cls(0)
+        pyxel.mouse(True)
         self.draw_floor()
 
         if self.tutorial or self.play:
@@ -163,11 +164,13 @@ class Game:
                 if not item == spear:
                     if pyxel.frame_count % 4 == 0:
                         item.update_sprite()
-                        
+            
             if self.play:
+                self.draw_HUD()
+                
                 CENTER_SCORES = len(str(player.scores)) / 2 * pyxel.FONT_WIDTH
                 pyxel.text(pyxel.width / 2 - CENTER_SCORES, 5, str(player.scores), 7)
-                
+            
             # Tutorial
             else:
                 TXT = "Mova-se e pegue o cajado..."
@@ -191,6 +194,12 @@ class Game:
         """Desenha o chão usando um tileset, um bloco de cada vez."""
         for x in range(3):
             pyxel.blt(x * 48, pyxel.height - 16, 1, 72, 128, 48, 16)
-
+            
+    def draw_HUD(self):
+        """Adiciona na tela os elementos da HUD de vida."""
+        for x in range(player.life):
+            PADX = x * 8
+            pyxel.blt(3 + PADX , 3, 1, 25, 152, 7, 7, 0)
+            
 if __name__ == "__main__":
     Game()
