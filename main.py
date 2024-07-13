@@ -143,7 +143,6 @@ class Game:
     def draw(self):
         """atualiza a interface a cada quadro."""
         pyxel.cls(0)
-        pyxel.mouse(True)
         self.draw_floor()
 
         if self.tutorial or self.play:
