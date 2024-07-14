@@ -196,9 +196,25 @@ class Game:
             
     def draw_life_HUD(self):
         """Adiciona na tela os elementos da HUD de vida."""
+        MAX_LIFE = 3
+        for x in range(MAX_LIFE):
+            PADX = x * 8
+            pyxel.blt(3 + PADX , 3, 1, 33, 152, 7, 7, 0)
+        
         for x in range(player.life):
             PADX = x * 8
             pyxel.blt(3 + PADX , 3, 1, 25, 152, 7, 7, 0)
+
+        MAX_LIFE_GOBLIN= 3
+        for x in range(MAX_LIFE_GOBLIN):
+            PADX = x * 8
+            POS_INITIAL_X = SCREEN_W -10 - PADX
+            pyxel.blt(POS_INITIAL_X, 3, 1, 33, 160, 7, 7, 0)
+        
+        for x in range(goblin_lancer.life):
+            PADX = x * 8
+            POS_INITIAL_X = SCREEN_W -10 - PADX
+            pyxel.blt(POS_INITIAL_X, 3, 1, 25, 160, 7, 7, 0)
             
 if __name__ == "__main__":
     Game()

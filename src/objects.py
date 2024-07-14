@@ -82,7 +82,10 @@ class Entity(Object):
             # Atack
             if attack:
                 self.attack()
-
+        #Died
+        else:
+           self.imgx = 144
+    
         self.apply_gravity()
 
     def move_left(self):
