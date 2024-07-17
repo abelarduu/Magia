@@ -75,6 +75,7 @@ class Game:
             if (pyxel.btnp(pyxel.KEY_KP_ENTER) or
                 pyxel.btnp(pyxel.KEY_RETURN)):
                 self.tutorial = True
+                pyxel.play(2, 3)
 
     def reset_game_objects(self):
         """Reseta todos atributos dos objetos e entidades do game."""
