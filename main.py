@@ -106,7 +106,7 @@ class Game:
 
         goblin_lancer.x = 160
         goblin_lancer.y = 68
-        goblin_lancer.life = 5
+        goblin_lancer.life = 3
 
     def check_player_collisions(self):
         """Código para verificar colisões entre objetos."""
@@ -119,6 +119,10 @@ class Game:
             # Remove a lança da tela
             if player.check_collision(spear):
                 spear.move_off_screen()
+                
+            # Adicionando recuo após o HIT
+            if player.x >= 5:
+                player.x -=5
 
         # Colisão com o cajado
         if player.check_collision(staff):
@@ -215,6 +219,6 @@ class Game:
             PADX = x * 8
             POS_INITIAL_X = SCREEN_W -10 - PADX
             pyxel.blt(POS_INITIAL_X, 3, 1, 25, 160, 7, 7, 0)
-            
+        
 if __name__ == "__main__":
     Game()
