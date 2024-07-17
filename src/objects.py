@@ -125,5 +125,6 @@ class Entity(Object):
             self.imgy = 16
             self.power = False
         
+        pyxel.play(3, 4)
         self.imgx = 144
         self.life -= 1
