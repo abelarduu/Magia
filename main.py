@@ -6,7 +6,7 @@ class Game:
         self.play = False
         self.tutorial = False
         pyxel.init(SCREEN_W, SCREEN_H, title= "Magia")
-        pyxel.load('src/assets/magia.pyxres')
+        pyxel.load('src/assets/Magia.pyxres')
         pyxel.playm(0, loop= True)
         pyxel.run(self.update, self.draw)
 
@@ -129,6 +129,7 @@ class Game:
             staff.move_off_screen()
             player.staff = True
             player.imgy = 16
+            pyxel.play(1, 2)
             
         # Colisão com o cogumelo
         if player.check_collision(mushroom):
@@ -137,12 +138,14 @@ class Game:
             player.power = True
             player.scores += 5
             player.imgy = 32
+            pyxel.play(1, 2)
 
         # Colisão com a moeda
         if player.check_collision(coin):
             coin.move_off_screen()
             coin.x = randint(0, SCREEN_W - coin.w*3)
             player.scores += 1
+            pyxel.play(2, 3)
             
     def draw(self):
         """atualiza a interface a cada quadro."""
