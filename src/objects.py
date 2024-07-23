@@ -1,6 +1,6 @@
 import pyxel
 
-#Constantes
+# Constantes
 MOVE_HOLD = 12
 MOVE_REPEAT = 3
 JUMP_HEIGHT = 16
@@ -82,7 +82,7 @@ class Entity(Object):
             # Atack
             if attack:
                 self.attack()
-        #Died
+        # Died
         else:
            self.imgx = 144
     

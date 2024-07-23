@@ -37,7 +37,7 @@ seller = Entity(160, 68, 1, 0, 112, 16, 16)
 entities_list = [player, goblin_lancer, goblin_bomber,
                  goblin_shaman, revived_goblin_shaman, seller]
 
-#HUD
+# HUD
 # Arte dos controles W A S D E
 CENTER_X = SCREEN_W/2 - (50/2)
 CENTER_Y = SCREEN_H/2 - (34/2) - 8
