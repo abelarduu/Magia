@@ -28,8 +28,8 @@ class Object:
         if (obj.y <= self.y + self.h and
             self.y <= obj.y + obj.h):
             
-            if (obj.x+2 <= self.x + self.w and
-                self.x+2 <= obj.x + obj.w):
+            if (obj.x + 2 <= self.x + self.w and
+                self.x + 2 <= obj.x + obj.w):
                 return True
         return False
     
@@ -64,7 +64,7 @@ class Entity(Object):
         self.jump = True
         self.power = False
         self.attacking = False
-        self.attack_item= None
+        self.attack_item = None
         
     def move(self, left, right= None, jump= None, attack= None):
         """Atualiza a posição da entidade com base na condições colocadas e aplica a gravidade."""
