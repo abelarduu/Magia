@@ -56,10 +56,11 @@ class Object:
         self.y = -16
                         
 class Entity(Object):
-    def __init__(self, *args):
+    def __init__(self, *args, life):
         super().__init__(*args)
+        self.MAX_LIFE = life
         
-        self.life = 3
+        self.life = life
         self.scores = 0
         self.jump = True
         self.power = False

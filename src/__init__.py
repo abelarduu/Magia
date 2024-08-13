@@ -19,23 +19,20 @@ spear = Object(-16, 76, 1, 128, 113, 15, 3)
 items_list = [coin, mushroom, staff, fireball, spear]
 
 # Entities
-player = Entity(10, 68, 1, 0, 0, 16, 16)
+player = Entity(10, 68, 1, 0, 0, 16, 16, life= 3)
 player.attack_item = fireball
 player.staff = False
 
-goblin_lancer = Entity(160, 68, 1, 0, 48, 16, 16)
+goblin_lancer = Entity(160, 68, 1, 0, 48, 16, 16, life= 3)
 goblin_lancer.attack_item = spear
-goblin_lancer.life = 3
 
-goblin_bomber = Entity(160, 68, 1, 0, 64, 16, 16)
+goblin_bomber = Entity(160, 68, 1, 0, 64, 16, 16, life= 2)
 
-goblin_shaman = Entity(160, 68, 1, 0, 80, 16, 16)
+goblin_shaman = Entity(160, 68, 1, 0, 80, 16, 16, life= 4)
 
-revived_goblin_shaman = Entity(160, 68, 1, 0, 96, 16, 16)
+revived_goblin_shaman = Entity(160, 68, 1, 0, 96, 16, 16, life= 5)
 
-seller = Entity(160, 68, 1, 0, 112, 16, 16)
-entities_list = [player, goblin_lancer, goblin_bomber,
-                 goblin_shaman, revived_goblin_shaman, seller]
+seller = Entity(160, 68, 1, 0, 112, 16, 16, life= 3)
 
 # HUD
 # Arte dos controles W A S D E

@@ -5,11 +5,13 @@ class Game:
     def __init__(self):
         self.play = False
         self.tutorial = False
+        self.mobs_list = [goblin_lancer, goblin_bomber, 
+                          goblin_shaman, revived_goblin_shaman, seller]
+
         pyxel.init(SCREEN_W, SCREEN_H, title= "Magia")
         pyxel.load('src/assets/Magia.pyxres')
         pyxel.playm(0, loop= True)
         pyxel.run(self.update, self.draw)
-
     
     def reset_game_objects(self):
         """Reseta todos atributos dos objetos e entidades do game."""
@@ -35,29 +37,66 @@ class Game:
         player.y = 68
         player.imgx = 0
         player.imgy = 0
-        player.life = 3
+        player.life = player.MAX_LIFE
         player.staff = False
         player.scores = 0
+        
+        self.mobs_list = [goblin_lancer, goblin_bomber, 
+                          goblin_shaman, revived_goblin_shaman, seller]
+                 
+        for mob in self.mobs_list:
+            mob.life = mob.MAX_LIFE
+            mob.x = 160
+            mob.y = 68
 
-        goblin_lancer.x = 160
-        goblin_lancer.y = 68
-        goblin_lancer.life = 3
+    def mov_mobs(self):
+        """Código para movimentação dos mobs."""
+        GOBLIN_POSITION = SCREEN_W - goblin_lancer.w
+       
+        if goblin_lancer.life >= 0:
+            # Movimentação do Goblin Lanceiro
+            goblin_lancer.move(left= goblin_lancer.x >= GOBLIN_POSITION,
+                               attack= (goblin_lancer.x <= GOBLIN_POSITION and
+                                        spear.x <= -16))
 
-    def check_player_collisions(self):
+        if goblin_lancer.life <= 0:
+            # Movimentação do Goblin Bombeiro
+            goblin_bomber.move(left= (goblin_bomber.x > -16))
+      
+        if goblin_bomber.life <= 0:
+            # Movimentação do Goblin Shaman Revivido
+            goblin_shaman.move(left= (goblin_shaman.x >= GOBLIN_POSITION))
+            
+        if goblin_shaman.life <= 0:
+            # Movimentação do Goblin Shaman Revivido
+            revived_goblin_shaman.x = goblin_shaman.x 
+
+    def check_all_collisions(self):
         """Código para verificar colisões entre objetos."""
         # Colisão com o goblin
-        if (player.check_collision(goblin_lancer) or
-            player.check_collision(spear)):
-            player.animate_and_apply_damage()
-            
-            # Se colidir com a lança:
-            # Remove a lança da tela
-            if player.check_collision(spear):
-                spear.move_off_screen()
+        for mob in self.mobs_list:
+            # Colisão de cada mob com a bola de fogo
+            if mob.check_collision(fireball):
+                mob.animate_and_apply_damage()
+                fireball.move_off_screen()
                 
-            # Adicionando recuo após o HIT
-            if player.x >= 5:
-                player.x -=5
+                # Adicionando recuo após o HIT
+                if mob.x >= 5:
+                    mob.x +=5
+
+            # Colisão do player com cada mob
+            if (player.check_collision(mob) or
+                player.check_collision(spear)):
+                player.animate_and_apply_damage()
+                
+                # Se colidir com a lança:
+                # Remove a lança da tela
+                if player.check_collision(spear):
+                    spear.move_off_screen()
+                    
+                # Adicionando recuo após o HIT
+                if player.x >= 5:
+                    player.x -=5
 
         # Colisão com o cajado
         if player.check_collision(staff):
@@ -93,7 +132,7 @@ class Game:
                         jump= pyxel.btnp(pyxel.KEY_W, hold= MOVE_HOLD, repeat= MOVE_REPEAT),
                         attack= pyxel.btnp(pyxel.KEY_E) and player.staff)
             
-            self.check_player_collisions()
+            self.check_all_collisions()
 
             # Se Player estiver com cajado:
             # Acaba o tutorial
@@ -106,34 +145,35 @@ class Game:
                 if not player.power:
                     mushroom.apply_gravity()
                 coin.apply_gravity()
-                
-                # Movimentação do Goblin Lanceiro
-                GOBLIN_POSITION = SCREEN_W - goblin_lancer.w
-                goblin_lancer.move(left= goblin_lancer.x >= GOBLIN_POSITION,
-                                   attack= (goblin_lancer.x <= GOBLIN_POSITION and
-                                   spear.x <= -16))
-                
-                # Colisão do goblin com a bola de fogo
-                if goblin_lancer.check_collision(fireball):
-                    goblin_lancer.animate_and_apply_damage()
-                    fireball.move_off_screen()
 
-                # Movimentação dos ataques
-                # Lanca do goblin lanceiro
-                if spear.x <= -16: 
-                    goblin_lancer.attacking = False
-                else:
-                    spear.x -= 2
+                self.mov_mobs()
 
+                # ATAQUES
+                # Ataque do Player
                 # Movimento da bola de fogo
-                if fireball.x >= SCREEN_W:
-                    player.attacking = False
-                else:  
-                   fireball.x += 2
-
+                if player.attacking:
+                    if fireball.x >= SCREEN_W:
+                        player.attacking = False
+                    else:  
+                       fireball.x += 2
+                       
+                # Ataque do Goblin Lanceiro
+                # Movimento da Lanca
+                if goblin_lancer.attacking:
+                    if spear.x <= -16: 
+                        goblin_lancer.attacking = False
+                    else:
+                        spear.x -= 2
+                       
+                #CICLO DO CIRCUITO DE MOBS
+                #se o mob morrer:
+                #remova da lista o mob morto
+                if self.mobs_list[0].life <= 0:
+                    self.mobs_list.remove(self.mobs_list[0])
+                
             # Reset Game
-            if (player.life <= 0 or
-                goblin_lancer.life <= 0):
+            if (player.life <= 0 or 
+                revived_goblin_shaman.life <= 0):
                 # Verificação de interação para resetar/reniciar o Game
                 if (pyxel.btnr(pyxel.KEY_KP_ENTER) or
                     pyxel.btnr(pyxel.KEY_RETURN)):
@@ -154,16 +194,17 @@ class Game:
         """Centraliza e desenha o texto na tela"""
         text_center_x = len(txt) / 2 * pyxel.FONT_WIDTH
         pyxel.text(pyxel.width / 2 - text_center_x, y, txt, col)
-    
+        
     def draw_floor(self):
         """Desenha o chão usando um tileset, um bloco de cada vez."""
+        BLOCK_WIDTH = 48
         for x in range(3):
-            pyxel.blt(x * 48, pyxel.height - 16, 1, 72, 128, 48, 16)
-            
+            pyxel.blt(x * BLOCK_WIDTH, pyxel.height - 16, 1, 72, 128, 48, 16)
+
     def draw_life_HUD(self):
         """Adiciona na tela os elementos da HUD de vida."""
-        MAX_LIFE = 3
-        for x in range(MAX_LIFE):
+        #HUD Player
+        for x in range(player.MAX_LIFE):
             PADX = x * 8
             pyxel.blt(3 + PADX , 3, 1, 33, 152, 7, 7, 0)
         
@@ -171,13 +212,14 @@ class Game:
             PADX = x * 8
             pyxel.blt(3 + PADX , 3, 1, 25, 152, 7, 7, 0)
 
-        MAX_LIFE_GOBLIN= 3
-        for x in range(MAX_LIFE_GOBLIN):
+        #HUD Mobs
+        mob = self.mobs_list[0]
+        for x in range(mob.MAX_LIFE):
             PADX = x * 8
             POS_INITIAL_X = SCREEN_W -10 - PADX
             pyxel.blt(POS_INITIAL_X, 3, 1, 33, 160, 7, 7, 0)
         
-        for x in range(goblin_lancer.life):
+        for x in range(mob.life):
             PADX = x * 8
             POS_INITIAL_X = SCREEN_W -10 - PADX
             pyxel.blt(POS_INITIAL_X, 3, 1, 25, 160, 7, 7, 0)
@@ -189,18 +231,16 @@ class Game:
 
         if self.tutorial or self.play:
             # Desenhando Entidades
-            for entity in entities_list:
-                entity.draw()
-                
+            player.draw()
+            for mob in self.mobs_list:
+                mob.draw()
                 # Animando entidades/Mobs
-                if not entity == player:
-                    if pyxel.frame_count % 4 == 0:
-                        entity.update_sprite()
+                if pyxel.frame_count % 4 == 0:
+                    mob.update_sprite()
                         
             # Desenhando itens
             for item in items_list:
                 item.draw()
-                
                 # Animando itens
                 if not item == spear:
                     if pyxel.frame_count % 4 == 0:
@@ -211,8 +251,8 @@ class Game:
                 self.draw_centered_text(str(player.scores), 5, 7)
                 
                 # Reset Game
-                if (player.life <= 0 or
-                    goblin_lancer.life <= 0):
+                if (player.life <= 0 or 
+                    revived_goblin_shaman.life <= 0):
                     self.draw_centered_text("Total de pontos:", SCREEN_H / 2 - 16, 7)
                     self.draw_centered_text(str(player.scores), SCREEN_H / 2, 7)
                     self.draw_centered_text("Enter para retornar", SCREEN_H - 16, 7)
@@ -230,7 +270,6 @@ class Game:
         else:
             pyxel.blt(0, 0, 0, 0, 0, 140, 100, 0)
             self.draw_centered_text("Enter para continuar", SCREEN_H - 16, 7)
-            
-
+    
 if __name__ == "__main__":
     Game()
