@@ -5,18 +5,19 @@ SCREEN_W = 140
 SCREEN_H = 100
 
 # Objects/Itens
-coin = Object(0, -16, 1, 0, 145, 6, 6)
+coin = Object(0, -16, 1, 0, 154, 6, 6)
 coin.x = randint(0, SCREEN_W - coin.w*3)
 
-mushroom = Object(0, -16, 1, 0, 137, 8, 8)
+mushroom = Object(0, -16, 1, 0, 146, 8, 8)
 mushroom.x = randint(0, SCREEN_W -  mushroom.w*3)
 
-staff = Object(SCREEN_W / 2 - 2, SCREEN_H - 32, 1, 0, 151, 3, 15)
+staff = Object(SCREEN_W / 2 - 2, SCREEN_H - 32, 1, 0, 160, 3, 15)
 
 fireball = Object(-16, -16, 1, 0, 128, 9, 9)
+dark_fireball  = Object(-16, -16, 1, 0, 137, 9, 9)
 
 spear = Object(-16, 76, 1, 128, 113, 15, 3)
-items_list = [coin, mushroom, staff, fireball, spear]
+items_list = [coin, mushroom, staff, fireball, dark_fireball, spear]
 
 # Entities
 player = Entity(10, 68, 1, 0, 0, 16, 16, life= 3)
@@ -29,8 +30,10 @@ goblin_lancer.attack_item = spear
 goblin_bomber = Entity(160, 68, 1, 0, 64, 16, 16, life= 2)
 
 goblin_shaman = Entity(160, 68, 1, 0, 80, 16, 16, life= 4)
+goblin_shaman.attack_item = dark_fireball
 
 revived_goblin_shaman = Entity(160, 68, 1, 0, 96, 16, 16, life= 5)
+revived_goblin_shaman.attack_item = dark_fireball
 
 seller = Entity(160, 68, 1, 0, 112, 16, 16, life= 3)
 

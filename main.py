@@ -65,7 +65,9 @@ class Game:
       
         if goblin_bomber.life <= 0:
             # Movimentação do Goblin Shaman Revivido
-            goblin_shaman.move(left= (goblin_shaman.x >= GOBLIN_POSITION))
+            goblin_shaman.move(left= goblin_shaman.x >= GOBLIN_POSITION,
+                               attack= (goblin_shaman.x <= GOBLIN_POSITION and
+                                        dark_fireball.x <= -16))
             
         if goblin_shaman.life <= 0:
             # Movimentação do Goblin Shaman Revivido
@@ -86,13 +88,19 @@ class Game:
 
             # Colisão do player com cada mob
             if (player.check_collision(mob) or
-                player.check_collision(spear)):
+                player.check_collision(spear) or
+                player.check_collision(dark_fireball)):
                 player.animate_and_apply_damage()
                 
                 # Se colidir com a lança:
                 # Remove a lança da tela
                 if player.check_collision(spear):
                     spear.move_off_screen()
+
+                # Se colidir com a Bola de fogo Sombria:
+                # Remove a lança da tela
+                if player.check_collision(dark_fireball):
+                    dark_fireball.move_off_screen()
                     
                 # Adicionando recuo após o HIT
                 if player.x >= 5:
@@ -163,7 +171,15 @@ class Game:
                     if spear.x <= -16: 
                         goblin_lancer.attacking = False
                     else:
-                        spear.x -= 2
+                        spear.x -= 2 
+                
+                # Ataque do Goblin Shaman
+                # Movimento da bola de fogo sombria
+                if goblin_shaman.attacking:
+                    if dark_fireball.x <= -16: 
+                        goblin_shaman.attacking = False
+                    else:
+                        dark_fireball.x -= 2
                        
                 #CICLO DO CIRCUITO DE MOBS
                 #se o mob morrer:
@@ -206,23 +222,23 @@ class Game:
         #HUD Player
         for x in range(player.MAX_LIFE):
             PADX = x * 8
-            pyxel.blt(3 + PADX , 3, 1, 33, 152, 7, 7, 0)
+            pyxel.blt(3 + PADX , 3, 1, 33, 161, 7, 7, 0)
         
         for x in range(player.life):
             PADX = x * 8
-            pyxel.blt(3 + PADX , 3, 1, 25, 152, 7, 7, 0)
+            pyxel.blt(3 + PADX , 3, 1, 25, 161, 7, 7, 0)
 
         #HUD Mobs
         mob = self.mobs_list[0]
         for x in range(mob.MAX_LIFE):
             PADX = x * 8
             POS_INITIAL_X = SCREEN_W -10 - PADX
-            pyxel.blt(POS_INITIAL_X, 3, 1, 33, 160, 7, 7, 0)
+            pyxel.blt(POS_INITIAL_X, 3, 1, 33, 169, 7, 7, 0)
         
         for x in range(mob.life):
             PADX = x * 8
             POS_INITIAL_X = SCREEN_W -10 - PADX
-            pyxel.blt(POS_INITIAL_X, 3, 1, 25, 160, 7, 7, 0)
+            pyxel.blt(POS_INITIAL_X, 3, 1, 25, 169, 7, 7, 0)
     
     def draw(self):
         """atualiza a interface a cada quadro."""
