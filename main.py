@@ -28,6 +28,9 @@ class Game:
 
         fireball.x = -16
         fireball.y =  -16
+        
+        dark_fireball.x = -16
+        dark_fireball.y =  -16
 
         spear.x = -16
         spear.y = 76
