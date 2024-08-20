@@ -7,6 +7,8 @@ JUMP_HEIGHT = 16
 MOVE_SPEED = 2
 GRAVITY = 0.4
 GROUND_LEVEL = 100 - 16
+JUMP_SPEED = -2.5 
+JUMP_ACCELERATION = 0.2
 
 class Object:
     def __init__(self, x, y, img, imgx, imgy, w, h):
@@ -38,7 +40,7 @@ class Object:
         if self.y < GROUND_LEVEL - self.h:
             self.y += GRAVITY
         else:
-            self.jump = True
+            self.y = GROUND_LEVEL - self.h
     
     def draw(self):
         """Desenha o objeto na tela."""
@@ -66,7 +68,8 @@ class Entity(Object):
         self.power = False
         self.attacking = False
         self.attack_item = None
-        
+        self.vertical_speed = 0
+    
     def move(self, left, right= None, jump= None, attack= None):
         """Atualiza a posição da entidade com base na condições colocadas e aplica a gravidade."""
         if self.life > 0:
@@ -105,8 +108,21 @@ class Entity(Object):
         """Executa a ação de pular."""
         if self.jump:
             self.update_sprite()
+            # Inicia o pulo com velocidade negativa
+            self.vertical_speed = JUMP_SPEED
             self.jump = False
-            self.y -= JUMP_HEIGHT
+
+    
+    def apply_gravity(self):
+        """Aplica a gravidade e a física do pulo ao objeto."""
+        if not self.jump:
+            self.y += self.vertical_speed
+            self.vertical_speed += JUMP_ACCELERATION
+
+        if self.y >= GROUND_LEVEL - self.h:
+            self.y = GROUND_LEVEL - self.h
+            self.jump = True
+            self.vertical_speed = 0
 
     def attack(self):
         """Muda para a sprite de ataque e executa o ataque."""
@@ -115,9 +131,9 @@ class Entity(Object):
         if not self.attacking and self.attack_item:
             POS_X = self.x + self.w/2
             POS_Y = self.y + (self.h/2) - self.attack_item.h/2
+            
             self.attack_item.x = POS_X
             self.attack_item.y = POS_Y
-
             self.attacking = True
         
     def animate_and_apply_damage(self):

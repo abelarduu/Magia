@@ -60,7 +60,7 @@ class Game:
             # Movimentação do Goblin Lanceiro
             goblin_lancer.move(left= goblin_lancer.x >= GOBLIN_POSITION,
                                attack= (goblin_lancer.x <= GOBLIN_POSITION and
-                                        spear.x <= -16))
+                                        not goblin_lancer.attacking))
 
         if goblin_lancer.life <= 0:
             # Movimentação do Goblin Bombeiro
@@ -70,11 +70,59 @@ class Game:
             # Movimentação do Goblin Shaman Revivido
             goblin_shaman.move(left= goblin_shaman.x >= GOBLIN_POSITION,
                                attack= (goblin_shaman.x <= GOBLIN_POSITION and
-                                        dark_fireball.x <= -16))
-            
-        if goblin_shaman.life <= 0:
+                                        not goblin_shaman.attacking))
+        
+        if  goblin_shaman.life <= -1:
             # Movimentação do Goblin Shaman Revivido
-            revived_goblin_shaman.x = goblin_shaman.x 
+            revived_goblin_shaman.move(left= revived_goblin_shaman.x >= GOBLIN_POSITION,
+                                       attack= (revived_goblin_shaman.x <= GOBLIN_POSITION and
+                                                not revived_goblin_shaman.attacking))
+        if goblin_shaman.life == 0:
+            revived_goblin_shaman.x = goblin_shaman.x
+            goblin_shaman.life -= 1
+
+    def check_all_attacks(self):
+        """Verifica ataques e movimenta seus itens de ataque no mapa(lança / bola de fogo)"""
+        # ATAQUES
+        # Ataque do Player
+        if player.attacking:
+            if (self.mobs_list[0].check_collision(fireball) or 
+                fireball.x >= SCREEN_W):
+                # Finalza o Ataque do player
+                player.attacking = False
+                
+            else:
+                # Movimento da bola de fogo
+               fireball.x += 2
+               
+        # Ataque do Goblin Lanceiro
+        if goblin_lancer.attacking:
+            if (player.check_collision(spear) or 
+                spear.x <= -16): 
+                # Remove o item de ataque da tela
+                # Finaliza o Ataque do mob
+                spear.move_off_screen()
+                goblin_lancer.attacking = False
+
+            else:
+                # Movimento da Lança
+                spear.x -= 2 
+        
+        # Ataque do Goblin Shaman e do revived Goblin Shaman
+        if (goblin_shaman.attacking or
+            revived_goblin_shaman.attacking):
+            
+            if (player.check_collision(dark_fireball) or 
+                dark_fireball.x <= -16):
+                # Remove o item de ataque da tela
+                # Finaliza o Ataque do mob
+                dark_fireball.move_off_screen()
+                goblin_shaman.attacking = False
+                revived_goblin_shaman.attacking = False
+                
+            else:
+                # Movimento da bola de fogo sombria
+                dark_fireball.x -= 2
 
     def check_all_collisions(self):
         """Código para verificar colisões entre objetos."""
@@ -95,16 +143,9 @@ class Game:
                 player.check_collision(dark_fireball)):
                 player.animate_and_apply_damage()
                 
-                # Se colidir com a lança:
-                # Remove a lança da tela
-                if player.check_collision(spear):
-                    spear.move_off_screen()
+                # Colisões com os itens de ataques
+                self.check_all_attacks()
 
-                # Se colidir com a Bola de fogo Sombria:
-                # Remove a lança da tela
-                if player.check_collision(dark_fireball):
-                    dark_fireball.move_off_screen()
-                    
                 # Adicionando recuo após o HIT
                 if player.x >= 5:
                     player.x -=5
@@ -145,6 +186,7 @@ class Game:
             
             self.check_all_collisions()
 
+            
             # Se Player estiver com cajado:
             # Acaba o tutorial
             if player.staff:
@@ -158,38 +200,14 @@ class Game:
                 coin.apply_gravity()
 
                 self.mov_mobs()
-
-                # ATAQUES
-                # Ataque do Player
-                # Movimento da bola de fogo
-                if player.attacking:
-                    if fireball.x >= SCREEN_W:
-                        player.attacking = False
-                    else:  
-                       fireball.x += 2
-                       
-                # Ataque do Goblin Lanceiro
-                # Movimento da Lanca
-                if goblin_lancer.attacking:
-                    if spear.x <= -16: 
-                        goblin_lancer.attacking = False
-                    else:
-                        spear.x -= 2 
-                
-                # Ataque do Goblin Shaman
-                # Movimento da bola de fogo sombria
-                if goblin_shaman.attacking:
-                    if dark_fireball.x <= -16: 
-                        goblin_shaman.attacking = False
-                    else:
-                        dark_fireball.x -= 2
+                self.check_all_attacks()
                        
                 #CICLO DO CIRCUITO DE MOBS
                 #se o mob morrer:
                 #remova da lista o mob morto
                 if self.mobs_list[0].life <= 0:
                     self.mobs_list.remove(self.mobs_list[0])
-                
+
             # Reset Game
             if (player.life <= 0 or 
                 revived_goblin_shaman.life <= 0):
