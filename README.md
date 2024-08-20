@@ -3,7 +3,6 @@
 ![Gameplay](img/icon.gif)
  
 ### Sobre o projeto
-### 🚧⚠️Em desenvolvimento...⚠️🚧
 
 Controle um mago, lute contra goblins e sobreviva o máximo possível.
 
