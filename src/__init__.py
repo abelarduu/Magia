@@ -5,6 +5,10 @@ SCREEN_W = 140
 SCREEN_H = 100
 
 # Objects/Itens
+STONE_CENTER_X = SCREEN_W / 2 - 13 / 2
+STONE_CENTER_Y = (SCREEN_H / 2 - 34 / 2) - 8
+mystic_stone = Object(STONE_CENTER_X, -34, 0, 0, 136, 13, 34)
+
 coin = Object(0, -16, 1, 0, 154, 6, 6)
 coin.x = randint(0, SCREEN_W - coin.w*3)
 
@@ -17,7 +21,7 @@ fireball = Object(-16, -16, 1, 0, 128, 9, 9)
 dark_fireball  = Object(-16, -16, 1, 0, 137, 9, 9)
 
 spear = Object(-16, 76, 1, 128, 113, 15, 3)
-items_list = [coin, mushroom, staff, fireball, dark_fireball, spear]
+items_list = [mystic_stone, coin, mushroom, staff, fireball, dark_fireball, spear]
 
 # Entities
 player = Entity(10, 68, 1, 0, 0, 16, 16, life= 3)
@@ -39,7 +43,7 @@ seller = Entity(160, 68, 1, 0, 112, 16, 16, life= 3)
 
 # HUD
 # Arte dos controles W A S D E
-CENTER_X = SCREEN_W/2 - (50/2)
-CENTER_Y = SCREEN_H/2 - (34/2) - 8
-controls_animation = Object(CENTER_X, CENTER_Y, 0, 0, 100, 50, 34)
+CONTROLS_CENTER_X = SCREEN_W/2 - (50/2)
+CONTROLS_ENTER_Y = SCREEN_H/2 - (34/2) - 8
+controls_animation = Object(CONTROLS_CENTER_X, CONTROLS_ENTER_Y, 0, 0, 100, 50, 34)
 controls_animation.total_frames = 5

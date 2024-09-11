@@ -17,6 +17,7 @@ class Game:
         """Reseta todos atributos dos objetos e entidades do game."""
         # Resetando tudo
         # Objetos/Itens
+        mystic_stone.y = -34
         coin.x = randint(0, SCREEN_W - coin.w*3)
         coin.y =  -16
 
@@ -161,6 +162,11 @@ class Game:
         if player.check_collision(mushroom):
             mushroom.move_off_screen()
             mushroom.x = randint(0, SCREEN_W - mushroom.w*3)
+            
+            # Incremento de Vida
+            if 0 < player.life < 3:
+                player.life += 1
+            
             player.power = True
             player.scores += 5
             player.imgy = 32
@@ -287,6 +293,9 @@ class Game:
                 self.draw_life_HUD()
                 self.draw_centered_text(str(player.scores), 5, 7)
                 
+                if mystic_stone.y < STONE_CENTER_Y:
+                    mystic_stone.y +=1
+                
                 # Reset Game
                 if (player.life <= 0 or 
                     revived_goblin_shaman.life <= 0):
@@ -294,6 +303,9 @@ class Game:
                     self.draw_centered_text(str(player.scores), SCREEN_H / 2, 7)
                     self.draw_centered_text("Enter para retornar", SCREEN_H - 16, 7)
                     self.draw_centered_text("ao menu inicial", SCREEN_H - 8, 7)
+                    
+                    if mystic_stone.y > -34:
+                        mystic_stone.y -=2
             
             # Tutorial
             else:

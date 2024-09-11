@@ -1,12 +1,14 @@
 import pyxel
-
 # Constantes
+
+SCREEN_W = 140
+SCREEN_H = 100
 MOVE_HOLD = 12
 MOVE_REPEAT = 3
 JUMP_HEIGHT = 16
 MOVE_SPEED = 2
 GRAVITY = 0.4
-GROUND_LEVEL = 100 - 16
+GROUND_LEVEL = SCREEN_H - 16
 JUMP_SPEED = -2.5 
 JUMP_ACCELERATION = 0.2
 
@@ -100,7 +102,7 @@ class Entity(Object):
 
     def move_right(self):
         """Move a entidade para a direita."""
-        if self.x < 140 - self.w:
+        if self.x < SCREEN_W - self.w:
             self.update_sprite()
             self.x += MOVE_SPEED
             
