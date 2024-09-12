@@ -182,17 +182,29 @@ class Game:
     def update(self):
         """Verifica interação a cada quadro."""
         if self.tutorial or self.play:
+            #Constantes do player
             MOVE_HOLD = 12
             MOVE_REPEAT = 3
+            PLAYER_MOVE_LEFT = (pyxel.btnp(pyxel.KEY_A, hold= MOVE_HOLD, repeat= MOVE_REPEAT) or
+                                 pyxel.btnp(pyxel.KEY_LEFT, hold= MOVE_HOLD, repeat= MOVE_REPEAT))
+                                 
+            PLAYER_MOVE_RIGHT = (pyxel.btnp(pyxel.KEY_D, hold= MOVE_HOLD, repeat= MOVE_REPEAT) or
+                                 pyxel.btnp(pyxel.KEY_RIGHT, hold= MOVE_HOLD, repeat= MOVE_REPEAT))
+                                 
+            PLAYER_JUMP = (pyxel.btnp(pyxel.KEY_W, hold= MOVE_HOLD, repeat= MOVE_REPEAT) or 
+                           pyxel.btnp(pyxel.KEY_UP, hold= MOVE_HOLD, repeat= MOVE_REPEAT))
+                          
+            PLAYER_ATTACK = (pyxel.btnp(pyxel.KEY_E) or
+                             pyxel.btnp(pyxel.KEY_SPACE))
+
             # Movimentação do Player
-            player.move(left= pyxel.btnp(pyxel.KEY_A, hold= MOVE_HOLD, repeat= MOVE_REPEAT),
-                        right= pyxel.btnp(pyxel.KEY_D, hold= MOVE_HOLD, repeat= MOVE_REPEAT),
-                        jump= pyxel.btnp(pyxel.KEY_W, hold= MOVE_HOLD, repeat= MOVE_REPEAT),
-                        attack= pyxel.btnp(pyxel.KEY_E) and player.staff)
+            player.move(left= PLAYER_MOVE_LEFT,
+                        right= PLAYER_MOVE_RIGHT,
+                        jump= PLAYER_JUMP,
+                        attack= player.staff and PLAYER_ATTACK)
             
             self.check_all_collisions()
 
-            
             # Se Player estiver com cajado:
             # Acaba o tutorial
             if player.staff:
