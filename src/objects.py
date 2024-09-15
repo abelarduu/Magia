@@ -1,6 +1,6 @@
 import pyxel
-# Constantes
 
+# Constantes
 SCREEN_W = 140
 SCREEN_H = 100
 MOVE_HOLD = 12

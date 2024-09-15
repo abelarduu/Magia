@@ -5,9 +5,9 @@ SCREEN_W = 140
 SCREEN_H = 100
 
 # Objects/Itens
-STONE_CENTER_X = SCREEN_W / 2 - 13 / 2
-STONE_CENTER_Y = (SCREEN_H / 2 - 34 / 2) - 8
-mystic_stone = Object(STONE_CENTER_X, -34, 0, 0, 136, 16, 27)
+STONE_CENTER_X = SCREEN_W / 2 - 16 / 2 + 2
+STONE_CENTER_Y = (SCREEN_H / 2 - 27 / 2) - 8
+mystic_stone = Object(STONE_CENTER_X, -27, 0, 0, 136, 16, 27)
 
 coin = Object(0, -16, 1, 0, 154, 6, 6)
 coin.x = randint(0, SCREEN_W - coin.w*3)

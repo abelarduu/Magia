@@ -6,8 +6,8 @@ class Game:
         self.play = False
         self.tutorial = False
         self.mobs_list = [goblin_lancer, goblin_bomber, 
-                          goblin_shaman, revived_goblin_shaman, seller]
-
+                          goblin_shaman, revived_goblin_shaman]
+        self.mob = self.mobs_list[0]
         pyxel.init(SCREEN_W, SCREEN_H, title= "Magia")
         pyxel.load('src/assets/Magia.pyxres')
         pyxel.playm(0, loop= True)
@@ -29,12 +29,6 @@ class Game:
 
         fireball.x = -16
         fireball.y =  -16
-        
-        dark_fireball.x = -16
-        dark_fireball.y =  -16
-
-        spear.x = -16
-        spear.y = 76
 
         # Entitades
         player.x = 10
@@ -45,8 +39,21 @@ class Game:
         player.staff = False
         player.scores = 0
         
+        self.reset_all_mobs()
+
+
+    def reset_all_mobs(self):
+        """Reseta todos atributos dos objetos e entidades do game."""
+        # Resetando tudo
+        # Objetos/Itens dos mobs
+        dark_fireball.x = -16
+        dark_fireball.y =  -16
+        
+        spear.x = -16
+        spear.y = 76
+
         self.mobs_list = [goblin_lancer, goblin_bomber, 
-                          goblin_shaman, revived_goblin_shaman, seller]
+                          goblin_shaman, revived_goblin_shaman]
                  
         for mob in self.mobs_list:
             mob.life = mob.MAX_LIFE
@@ -82,82 +89,74 @@ class Game:
             revived_goblin_shaman.x = goblin_shaman.x
             goblin_shaman.life -= 1
 
-    def check_all_attacks(self):
-        """Verifica ataques e movimenta seus itens de ataque no mapa(lança / bola de fogo)"""
-        # ATAQUES
-        # Ataque do Player
-        if player.attacking:
-            if (self.mobs_list[0].check_collision(fireball) or 
-                fireball.x >= SCREEN_W):
-                # Finalza o Ataque do player
-                player.attacking = False
-                
-            else:
-                # Movimento da bola de fogo
-               fireball.x += 2
-               
-        # Ataque do Goblin Lanceiro
-        if goblin_lancer.attacking:
-            if (player.check_collision(spear) or 
-                spear.x <= -16): 
-                # Remove o item de ataque da tela
-                # Finaliza o Ataque do mob
-                spear.move_off_screen()
-                goblin_lancer.attacking = False
+    def mov_player(self):
+        """Código para movimentação dos Player."""
+        # Constantes do player
+        MOVE_HOLD = 12
+        MOVE_REPEAT = 3
+        PLAYER_MOVE_LEFT = (pyxel.btnp(pyxel.KEY_A, hold= MOVE_HOLD, repeat= MOVE_REPEAT) or
+                             pyxel.btnp(pyxel.KEY_LEFT, hold= MOVE_HOLD, repeat= MOVE_REPEAT))
+                             
+        PLAYER_MOVE_RIGHT = (pyxel.btnp(pyxel.KEY_D, hold= MOVE_HOLD, repeat= MOVE_REPEAT) or
+                             pyxel.btnp(pyxel.KEY_RIGHT, hold= MOVE_HOLD, repeat= MOVE_REPEAT))
+                             
+        PLAYER_JUMP = (pyxel.btnp(pyxel.KEY_W, hold= MOVE_HOLD, repeat= MOVE_REPEAT) or 
+                       pyxel.btnp(pyxel.KEY_UP, hold= MOVE_HOLD, repeat= MOVE_REPEAT))
+                      
+        PLAYER_ATTACK = (pyxel.btnp(pyxel.KEY_E) or
+                         pyxel.btnp(pyxel.KEY_SPACE))
 
-            else:
-                # Movimento da Lança
-                spear.x -= 2 
-        
-        # Ataque do Goblin Shaman e do revived Goblin Shaman
-        if (goblin_shaman.attacking or
-            revived_goblin_shaman.attacking):
-            
-            if (player.check_collision(dark_fireball) or 
-                dark_fireball.x <= -16):
-                # Remove o item de ataque da tela
-                # Finaliza o Ataque do mob
-                dark_fireball.move_off_screen()
-                goblin_shaman.attacking = False
-                revived_goblin_shaman.attacking = False
-                
-            else:
-                # Movimento da bola de fogo sombria
-                dark_fireball.x -= 2
+        # Movimentação do Player
+        player.move(left= PLAYER_MOVE_LEFT,
+                    right= PLAYER_MOVE_RIGHT,
+                    jump= PLAYER_JUMP,
+                    attack= player.staff and PLAYER_ATTACK)
 
     def check_all_collisions(self):
         """Código para verificar colisões entre objetos."""
-        # Colisão com o goblin
-        for mob in self.mobs_list:
-            # Colisão de cada mob com a bola de fogo
-            if mob.check_collision(fireball):
-                mob.animate_and_apply_damage()
-                fireball.move_off_screen()
+        # Colisão de cada mob com o ataque do player
+        if self.mob.check_collision(player.attack_item):
+            self.mob.animate_and_apply_damage()
+            player.attack_item.move_off_screen()
+            player.attacking = False
+            # Adicionando recuo após o HIT
+            if self.mob.x >= 5:
+                self.mob.x +=5
+        else:
+            # Movimentando o ataque do player
+            if player.attack_item.x >= SCREEN_W:
+                player.attacking = False
+            else:
+                player.attack_item.x += 2
+
+
+        # Colisão do player com cada mob
+        if (player.check_collision(self.mob) or
+            not self.mob.attack_item == None and 
+            player.check_collision(self.mob.attack_item)):
+            player.animate_and_apply_damage()
+            self.mob.attacking = False
                 
-                # Adicionando recuo após o HIT
-                if mob.x >= 5:
-                    mob.x +=5
-
-            # Colisão do player com cada mob
-            if (player.check_collision(mob) or
-                player.check_collision(spear) or
-                player.check_collision(dark_fireball)):
-                player.animate_and_apply_damage()
-                
-                # Colisões com os itens de ataques
-                self.check_all_attacks()
-
-                # Adicionando recuo após o HIT
-                if player.x >= 5:
-                    player.x -=5
-
-        # Colisão com o cajado
-        if player.check_collision(staff):
-            staff.move_off_screen()
-            player.staff = True
-            player.imgy = 16
-            pyxel.play(1, 2)
+            # Adicionando recuo após o HIT
+            if player.x >= 5:
+                player.x -= 5
             
+        else:
+            if self.mob.attack_item != None:
+                # Movimentando o ataque do mob
+                if self.mob.attack_item.x <= -16:
+                    self.mob.attacking = False
+                else:
+                    self.mob.attack_item.x -= 2
+
+        # COLISÕES COM ITENS
+        # Colisão com a moeda
+        if player.check_collision(coin):
+            coin.move_off_screen()
+            coin.x = randint(0, SCREEN_W - coin.w*3)
+            player.scores += 1
+            pyxel.play(2, 3)
+                        
         # Colisão com o cogumelo
         if player.check_collision(mushroom):
             mushroom.move_off_screen()
@@ -171,38 +170,18 @@ class Game:
             player.scores += 5
             player.imgy = 32
             pyxel.play(1, 2)
-
-        # Colisão com a moeda
-        if player.check_collision(coin):
-            coin.move_off_screen()
-            coin.x = randint(0, SCREEN_W - coin.w*3)
-            player.scores += 1
-            pyxel.play(2, 3)
+            
+        # Colisão com o cajado
+        if player.check_collision(staff):
+            staff.move_off_screen()
+            player.staff = True
+            player.imgy = 16
+            pyxel.play(1, 2)
             
     def update(self):
         """Verifica interação a cada quadro."""
         if self.tutorial or self.play:
-            #Constantes do player
-            MOVE_HOLD = 12
-            MOVE_REPEAT = 3
-            PLAYER_MOVE_LEFT = (pyxel.btnp(pyxel.KEY_A, hold= MOVE_HOLD, repeat= MOVE_REPEAT) or
-                                 pyxel.btnp(pyxel.KEY_LEFT, hold= MOVE_HOLD, repeat= MOVE_REPEAT))
-                                 
-            PLAYER_MOVE_RIGHT = (pyxel.btnp(pyxel.KEY_D, hold= MOVE_HOLD, repeat= MOVE_REPEAT) or
-                                 pyxel.btnp(pyxel.KEY_RIGHT, hold= MOVE_HOLD, repeat= MOVE_REPEAT))
-                                 
-            PLAYER_JUMP = (pyxel.btnp(pyxel.KEY_W, hold= MOVE_HOLD, repeat= MOVE_REPEAT) or 
-                           pyxel.btnp(pyxel.KEY_UP, hold= MOVE_HOLD, repeat= MOVE_REPEAT))
-                          
-            PLAYER_ATTACK = (pyxel.btnp(pyxel.KEY_E) or
-                             pyxel.btnp(pyxel.KEY_SPACE))
-
-            # Movimentação do Player
-            player.move(left= PLAYER_MOVE_LEFT,
-                        right= PLAYER_MOVE_RIGHT,
-                        jump= PLAYER_JUMP,
-                        attack= player.staff and PLAYER_ATTACK)
-            
+            self.mov_player()
             self.check_all_collisions()
 
             # Se Player estiver com cajado:
@@ -216,19 +195,22 @@ class Game:
                 if not player.power:
                     mushroom.apply_gravity()
                 coin.apply_gravity()
-
+                
+                # CICLO DO CIRCUITO DE MOBS
+                try:
+                    self.mob = self.mobs_list[0]
+                    # se o mob morrer:
+                    # remova da lista o mob morto
+                    if self.mob.life <= 0:
+                        self.mobs_list.remove(self.mob)
+                except:
+                    self.reset_all_mobs()
+                    self.mob = self.mobs_list[0]
+                # Movimentando cada mobs
                 self.mov_mobs()
-                self.check_all_attacks()
-                       
-                #CICLO DO CIRCUITO DE MOBS
-                #se o mob morrer:
-                #remova da lista o mob morto
-                if self.mobs_list[0].life <= 0:
-                    self.mobs_list.remove(self.mobs_list[0])
 
             # Reset Game
-            if (player.life <= 0 or 
-                revived_goblin_shaman.life <= 0):
+            if player.life <= 0:
                 # Verificação de interação para resetar/reniciar o Game
                 if (pyxel.btnr(pyxel.KEY_KP_ENTER) or
                     pyxel.btnr(pyxel.KEY_RETURN)):
@@ -258,7 +240,7 @@ class Game:
 
     def draw_life_HUD(self):
         """Adiciona na tela os elementos da HUD de vida."""
-        #HUD Player
+        # HUD Player
         for x in range(player.MAX_LIFE):
             PADX = x * 8
             pyxel.blt(3 + PADX , 3, 1, 33, 161, 7, 7, 0)
@@ -267,14 +249,13 @@ class Game:
             PADX = x * 8
             pyxel.blt(3 + PADX , 3, 1, 25, 161, 7, 7, 0)
 
-        #HUD Mobs
-        mob = self.mobs_list[0]
-        for x in range(mob.MAX_LIFE):
+        # HUD Mobs
+        for x in range(self.mob.MAX_LIFE):
             PADX = x * 8
             POS_INITIAL_X = SCREEN_W -10 - PADX
             pyxel.blt(POS_INITIAL_X, 3, 1, 33, 169, 7, 7, 0)
         
-        for x in range(mob.life):
+        for x in range(self.mob.life):
             PADX = x * 8
             POS_INITIAL_X = SCREEN_W -10 - PADX
             pyxel.blt(POS_INITIAL_X, 3, 1, 25, 169, 7, 7, 0)
@@ -285,39 +266,37 @@ class Game:
         self.draw_floor()
 
         if self.tutorial or self.play:
-            # Desenhando Entidades
-            player.draw()
-            for mob in self.mobs_list:
-                mob.draw()
-                # Animando entidades/Mobs
-                if pyxel.frame_count % 4 == 0:
-                    mob.update_sprite()
-                        
-            # Desenhando itens
+            # Desenhando Itens
             for item in items_list:
-                item.draw()
-                # Animando itens
                 if not item == spear:
                     if pyxel.frame_count % 4 == 0:
                         item.update_sprite()
+                item.draw()
             
+            # Desenhando Entidades   
+            player.draw()
+            self.mob.draw()
+            if pyxel.frame_count % 4 == 0:
+                self.mob.update_sprite()
+                        
             if self.play:
                 self.draw_life_HUD()
                 self.draw_centered_text(str(player.scores), 5, 7)
                 
-                if mystic_stone.y < STONE_CENTER_Y:
-                    mystic_stone.y +=1
-                
                 # Reset Game
-                if (player.life <= 0 or 
-                    revived_goblin_shaman.life <= 0):
+                if player.life <= 0:
                     self.draw_centered_text("Total de pontos:", SCREEN_H / 2 - 16, 7)
                     self.draw_centered_text(str(player.scores), SCREEN_H / 2, 7)
                     self.draw_centered_text("Enter para retornar", SCREEN_H - 16, 7)
                     self.draw_centered_text("ao menu inicial", SCREEN_H - 8, 7)
                     
+                    # Remova Pedra mística da tela
                     if mystic_stone.y > -34:
-                        mystic_stone.y -=2
+                        mystic_stone.y -= 2
+                else:
+                    # Mova Pedra mística para dentro da tela
+                    if mystic_stone.y < STONE_CENTER_Y:
+                        mystic_stone.y += 1
             
             # Tutorial
             else:
