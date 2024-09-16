@@ -18,7 +18,7 @@ mushroom.x = randint(0, SCREEN_W -  mushroom.w*3)
 staff = Object(SCREEN_W / 2 - 2, SCREEN_H - 32, 1, 0, 160, 3, 15)
 
 fireball = Object(-16, -16, 1, 0, 128, 9, 9)
-dark_fireball  = Object(-16, -16, 1, 0, 137, 9, 9)
+dark_fireball = Object(-16, -16, 1, 0, 137, 9, 9)
 
 spear = Object(-16, 76, 1, 128, 113, 15, 3)
 items_list = [mystic_stone, coin, mushroom, staff, fireball, dark_fireball, spear]

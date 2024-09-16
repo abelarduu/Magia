@@ -30,6 +30,13 @@ class Game:
         fireball.x = -16
         fireball.y =  -16
 
+        # Attack_itens dos mobs
+        dark_fireball.x = -16
+        dark_fireball.y = -16
+
+        spear.x = -16
+        spear.y = 76
+
         # Entitades
         player.x = 10
         player.y = 68
@@ -41,17 +48,9 @@ class Game:
         
         self.reset_all_mobs()
 
-
     def reset_all_mobs(self):
-        """Reseta todos atributos dos objetos e entidades do game."""
-        # Resetando tudo
-        # Objetos/Itens dos mobs
-        dark_fireball.x = -16
-        dark_fireball.y =  -16
-        
-        spear.x = -16
-        spear.y = 76
-
+        """Reseta cada mob do game e as suas armas de ataque."""
+        # Resetando Mobs
         self.mobs_list = [goblin_lancer, goblin_bomber, 
                           goblin_shaman, revived_goblin_shaman]
                  
@@ -120,15 +119,14 @@ class Game:
             player.attack_item.move_off_screen()
             player.attacking = False
             # Adicionando recuo após o HIT
-            if self.mob.x >= 5:
-                self.mob.x +=5
+            self.mob.x += 5
         else:
             # Movimentando o ataque do player
-            if player.attack_item.x >= SCREEN_W:
-                player.attacking = False
-            else:
-                player.attack_item.x += 2
-
+            if player.attacking:
+                if player.attack_item.x >= SCREEN_W:
+                    player.attacking = False
+                else:
+                    player.attack_item.x += 2
 
         # Colisão do player com cada mob
         if (player.check_collision(self.mob) or
@@ -136,18 +134,16 @@ class Game:
             player.check_collision(self.mob.attack_item)):
             player.animate_and_apply_damage()
             self.mob.attacking = False
-                
             # Adicionando recuo após o HIT
             if player.x >= 5:
                 player.x -= 5
-            
         else:
-            if self.mob.attack_item != None:
+            if not self.mob == goblin_bomber:
                 # Movimentando o ataque do mob
                 if self.mob.attack_item.x <= -16:
                     self.mob.attacking = False
-                else:
-                    self.mob.attack_item.x -= 2
+            dark_fireball.x -= 2
+            spear.x -= 2
 
         # COLISÕES COM ITENS
         # Colisão com a moeda
@@ -261,7 +257,7 @@ class Game:
             pyxel.blt(POS_INITIAL_X, 3, 1, 25, 169, 7, 7, 0)
     
     def draw(self):
-        """atualiza a interface a cada quadro."""
+        """Atualiza a interface a cada quadro."""
         pyxel.cls(0)
         self.draw_floor()
 
@@ -276,6 +272,7 @@ class Game:
             # Desenhando Entidades   
             player.draw()
             self.mob.draw()
+            #Animando mobs e attack_item
             if pyxel.frame_count % 4 == 0:
                 self.mob.update_sprite()
                         
@@ -290,7 +287,7 @@ class Game:
                     self.draw_centered_text("Enter para retornar", SCREEN_H - 16, 7)
                     self.draw_centered_text("ao menu inicial", SCREEN_H - 8, 7)
                     
-                    # Remova Pedra mística da tela
+                    # Mova Pedra mística para fora da tela
                     if mystic_stone.y > -34:
                         mystic_stone.y -= 2
                 else:
