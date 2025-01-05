@@ -94,16 +94,20 @@ class Game:
         MOVE_HOLD = 12
         MOVE_REPEAT = 3
         PLAYER_MOVE_LEFT = (pyxel.btnp(pyxel.KEY_A, hold= MOVE_HOLD, repeat= MOVE_REPEAT) or
-                             pyxel.btnp(pyxel.KEY_LEFT, hold= MOVE_HOLD, repeat= MOVE_REPEAT))
+                            pyxel.btnp(pyxel.KEY_LEFT, hold= MOVE_HOLD, repeat= MOVE_REPEAT) or
+                            pyxel.btnp(pyxel.GAMEPAD1_BUTTON_DPAD_LEFT, hold= MOVE_HOLD, repeat= MOVE_REPEAT))
                              
         PLAYER_MOVE_RIGHT = (pyxel.btnp(pyxel.KEY_D, hold= MOVE_HOLD, repeat= MOVE_REPEAT) or
-                             pyxel.btnp(pyxel.KEY_RIGHT, hold= MOVE_HOLD, repeat= MOVE_REPEAT))
+                             pyxel.btnp(pyxel.KEY_RIGHT, hold= MOVE_HOLD, repeat= MOVE_REPEAT) or
+                             pyxel.btnp(pyxel.GAMEPAD1_BUTTON_DPAD_RIGHT, hold= MOVE_HOLD, repeat= MOVE_REPEAT))
                              
         PLAYER_JUMP = (pyxel.btnp(pyxel.KEY_W, hold= MOVE_HOLD, repeat= MOVE_REPEAT) or 
-                       pyxel.btnp(pyxel.KEY_UP, hold= MOVE_HOLD, repeat= MOVE_REPEAT))
+                       pyxel.btnp(pyxel.KEY_UP, hold= MOVE_HOLD, repeat= MOVE_REPEAT) or
+                       pyxel.btnp(pyxel.GAMEPAD1_BUTTON_DPAD_UP, hold= MOVE_HOLD, repeat= MOVE_REPEAT))
                       
         PLAYER_ATTACK = (pyxel.btnp(pyxel.KEY_E) or
-                         pyxel.btnp(pyxel.KEY_SPACE))
+                         pyxel.btnp(pyxel.KEY_SPACE) or
+                         pyxel.btnp(pyxel.GAMEPAD1_BUTTON_B))
 
         # Movimentação do Player
         player.move(left= PLAYER_MOVE_LEFT,
@@ -209,7 +213,8 @@ class Game:
             if player.life <= 0:
                 # Verificação de interação para resetar/reniciar o Game
                 if (pyxel.btnr(pyxel.KEY_KP_ENTER) or
-                    pyxel.btnr(pyxel.KEY_RETURN)):
+                    pyxel.btnr(pyxel.KEY_RETURN) or
+                    pyxel.btnr(pyxel.GAMEPAD1_BUTTON_B)):
 
                     self.reset_game_objects()
                     self.tutorial = False
@@ -219,7 +224,8 @@ class Game:
         else:
             # Verificação de interação para inicialização do Game
             if (pyxel.btnp(pyxel.KEY_KP_ENTER) or
-                pyxel.btnp(pyxel.KEY_RETURN)):
+                pyxel.btnp(pyxel.KEY_RETURN) or
+                pyxel.btnr(pyxel.GAMEPAD1_BUTTON_B)):
                 self.tutorial = True
                 pyxel.play(2, 3)
                 
