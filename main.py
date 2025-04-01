@@ -167,7 +167,7 @@ class Game:
                 player.life += 1
             
             player.power = True
-            player.scores += 5
+            player.scores += 3
             player.imgy = 32
             pyxel.play(1, 2)
             
@@ -202,6 +202,7 @@ class Game:
                     # se o mob morrer:
                     # remova da lista o mob morto
                     if self.mob.life <= 0:
+                        player.scores += 1
                         self.mobs_list.remove(self.mob)
                 except:
                     self.reset_all_mobs()
