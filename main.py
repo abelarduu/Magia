@@ -202,6 +202,7 @@ class Game:
                     # se o mob morrer:
                     # remova da lista o mob morto
                     if self.mob.life <= 0:
+                        pyxel.play(2, 3)
                         player.scores += 1
                         self.mobs_list.remove(self.mob)
                 except:
